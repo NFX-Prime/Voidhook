@@ -6,7 +6,6 @@ public class CameraFollow : MonoBehaviour
 
     public GameObject followedObj;
 
-    public
 
     private void Start()
     {
