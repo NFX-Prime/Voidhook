@@ -9,6 +9,8 @@ public class Movement : MonoBehaviour
     private float jumpHeight = 1.5f;
     private float gravityValue = -9.81f;
 
+    private bool doubleJump = false;
+
     private CharacterController controller;
     private Vector3 playerVelocity;
     private bool groundedPlayer;
@@ -40,6 +42,8 @@ public class Movement : MonoBehaviour
         if (groundedPlayer && playerVelocity.y < 0)
         {
             playerVelocity.y = 0f;
+            // Resets double jump 
+            doubleJump = false;
         }
 
         // Read input
@@ -57,6 +61,13 @@ public class Movement : MonoBehaviour
         {
             playerVelocity.y = Mathf.Sqrt(jumpHeight * -2.0f * gravityValue);
         }
+        else if (jumpAction.action.triggered && doubleJump == false)
+        {
+            playerVelocity.y = Mathf.Sqrt(jumpHeight * -2.0f * gravityValue);
+            // Prevents another double jump to happen.
+            doubleJump = true;
+        }
+
 
         // Apply gravity
         playerVelocity.y += gravityValue * Time.deltaTime;
