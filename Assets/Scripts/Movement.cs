@@ -10,6 +10,8 @@ public class Movement : MonoBehaviour
     private float gravityValue = -9.81f;
 
     private bool doubleJump = false;
+    private bool dash = false;
+
 
     private CharacterController controller;
     private Vector3 playerVelocity;
