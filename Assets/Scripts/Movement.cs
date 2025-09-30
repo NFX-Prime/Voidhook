@@ -108,8 +108,6 @@ public class Movement : MonoBehaviour
             // Remove movement "into" the wall
             lastMoveDirection = Vector3.ProjectOnPlane(lastMoveDirection, lastWallNormal).normalized;
         }
-
-
     }
 
 
