@@ -18,6 +18,9 @@ public class Movement : MonoBehaviour
     private CharacterController controller;
     private Vector3 playerVelocity;
     public bool groundedPlayer;
+    private Vector3 lastMoveDirection = Vector3.zero;
+    // Variable to track if direction was reset midair
+    private bool usedDoubleJumpDirection = false;
 
     [Header("Input Actions")]
     public InputActionReference moveAction; // expects Vector2
@@ -49,21 +52,43 @@ public class Movement : MonoBehaviour
             playerVelocity.y = 0f;
             // Resets double jump 
             doubleJump = false;
+            // Reset direction of double jump
+            usedDoubleJumpDirection = false;
         }
 
         // Read input only if in joint in the
         Vector2 input = moveAction.action.ReadValue<Vector2>();
         Vector3 move = new Vector3(input.x, 0, input.y);
         move = Vector3.ClampMagnitude(move, 1f);
-        Quaternion targetRotation = Quaternion.LookRotation(move);
-        transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * rotationSpeed);
-        if (move != Vector3.zero)
+
+        // Only allow movement changes if player is grounded
+        if (groundedPlayer == true)
         {
+            lastMoveDirection = move;
+        }
+        else
+        {
+
+            // If statement to see if the player has a double jump and still wants to jump in a different direction.
+            if (doubleJump && !usedDoubleJumpDirection && move != Vector3.zero)
+            {
+                lastMoveDirection = move;
+                usedDoubleJumpDirection = true;
+            }
+            // This makes it so that when in the air, it'll commit to the last move direction for a comitted jump
+            move = lastMoveDirection;
+        }
+
+        // Rotation only when moving on ground.
+        if (groundedPlayer && move != Vector3.zero)
+        {
+            Quaternion targetRotation = Quaternion.LookRotation(move);
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * rotationSpeed);
             transform.forward = move;
         }
 
         // Calling the jump function
-        jumpFunction();
+        jumpFunction(move);
 
 
         // Apply gravity
@@ -77,7 +102,7 @@ public class Movement : MonoBehaviour
     }
 
 
-    void jumpFunction()
+    void jumpFunction(Vector3 move)
     {
         // Jump
         if (jumpAction.action.triggered && groundedPlayer)
