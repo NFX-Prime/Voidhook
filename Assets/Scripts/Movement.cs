@@ -2,6 +2,7 @@
 
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UIElements;
 using static UnityEngine.GraphicsBuffer;
 
 public class Movement : MonoBehaviour
@@ -21,6 +22,8 @@ public class Movement : MonoBehaviour
     private Vector3 lastMoveDirection = Vector3.zero;
     // Variable to track if direction was reset midair
     private bool usedDoubleJumpDirection = false;
+    // Variable to hold what direction to "slide" down like mario64 when hitting a wall.
+    private Vector3 lastWallNormal = Vector3.zero;
 
     [Header("Input Actions")]
     public InputActionReference moveAction; // expects Vector2
@@ -90,15 +93,23 @@ public class Movement : MonoBehaviour
         // Calling the jump function
         jumpFunction(move);
 
-
         // Apply gravity
         playerVelocity.y += gravityValue * Time.deltaTime;
 
         // Combine horizontal and vertical movement
         Vector3 finalMove = (move * playerSpeed) + (playerVelocity.y * Vector3.up);
-        controller.Move(finalMove * Time.deltaTime);
 
-        
+        // Actually move and get collision flags
+        CollisionFlags flags = controller.Move(finalMove * Time.deltaTime);
+
+        // If we hit a wall, slide along it
+        if ((flags & CollisionFlags.Sides) != 0 && lastWallNormal != Vector3.zero)
+        {
+            // Remove movement "into" the wall
+            lastMoveDirection = Vector3.ProjectOnPlane(lastMoveDirection, lastWallNormal).normalized;
+        }
+
+
     }
 
 
@@ -127,5 +138,18 @@ public class Movement : MonoBehaviour
         Vector3 finalMove = (move * playerSpeed) + (playerVelocity.y * Vector3.up);
         controller.Move(finalMove * Time.deltaTime);
 
+    }
+
+    /// <summary>
+    /// Function that saves how the player hit the wall and what side the wall is facing.
+    /// </summary>
+    /// <param name="hit"></param>
+    void OnControllerColliderHit(ControllerColliderHit hit)
+    {
+        // Store wall normal
+        if ((controller.collisionFlags & CollisionFlags.Sides) != 0)
+        {
+            lastWallNormal = hit.normal;
+        }
     }
 }
