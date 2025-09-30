@@ -2,12 +2,14 @@
 
 using UnityEngine;
 using UnityEngine.InputSystem;
+using static UnityEngine.GraphicsBuffer;
 
 public class Movement : MonoBehaviour
 {
     private float playerSpeed = 5.0f;
     private float jumpHeight = 1.5f;
     private float gravityValue = -9.81f;
+    private float rotationSpeed = 4.0f;
 
     private bool doubleJump = false;
     private bool dash = false;
@@ -40,6 +42,7 @@ public class Movement : MonoBehaviour
 
     void Update()
     {
+
         groundedPlayer = controller.isGrounded;
         if (groundedPlayer && playerVelocity.y < 0)
         {
@@ -52,10 +55,9 @@ public class Movement : MonoBehaviour
         Vector2 input = moveAction.action.ReadValue<Vector2>();
         Vector3 move = new Vector3(input.x, 0, input.y);
         move = Vector3.ClampMagnitude(move, 1f);
-
-
-        // 
-        if (move != Vector3.zero && groundedPlayer == true)
+        Quaternion targetRotation = Quaternion.LookRotation(move);
+        transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * rotationSpeed);
+        if (move != Vector3.zero)
         {
             transform.forward = move;
         }
@@ -91,5 +93,14 @@ public class Movement : MonoBehaviour
             doubleJump = true;
             groundedPlayer = controller.isGrounded;
         }
+
+
+        // Apply gravity
+        playerVelocity.y += gravityValue * Time.deltaTime;
+
+        // Combine horizontal and vertical movement
+        Vector3 finalMove = (move * playerSpeed) + (playerVelocity.y * Vector3.up);
+        controller.Move(finalMove * Time.deltaTime);
+
     }
 }
