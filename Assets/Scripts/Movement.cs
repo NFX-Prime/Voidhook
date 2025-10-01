@@ -26,8 +26,20 @@ public class Movement : MonoBehaviour
     private Vector3 lastWallNormal = Vector3.zero;
 
     [Header("Input Actions")]
-    public InputActionReference moveAction; // expects Vector2
-    public InputActionReference jumpAction; // expects Button
+    // Vector2 expected variable
+    public InputActionReference moveAction; 
+    // This variable is expecting a button
+    public InputActionReference jumpAction; 
+
+    [Header("Air Control Settings")]
+    // How much control we can change in the air (0 = none, 1 = same as ground)
+    public float airControlFactor = 0.3f; 
+    // How quickly to slow down if no input in air.
+    public float airDeceleration = 2.0f;  
+
+    // Setting horizontal velocity.
+    private Vector3 currentHorizontalVelocity = Vector3.zero;
+
 
     private void Awake()
     {
@@ -50,6 +62,8 @@ public class Movement : MonoBehaviour
     {
 
         groundedPlayer = controller.isGrounded;
+
+        // If statement to check if player is on the ground
         if (groundedPlayer && playerVelocity.y < 0)
         {
             playerVelocity.y = 0f;
@@ -61,43 +75,61 @@ public class Movement : MonoBehaviour
 
         // Read input only if in joint in the
         Vector2 input = moveAction.action.ReadValue<Vector2>();
-        Vector3 move = new Vector3(input.x, 0, input.y);
-        move = Vector3.ClampMagnitude(move, 1f);
+
+        Vector3 inputDir = new Vector3(input.x, 0, input.y);
+        inputDir = Vector3.ClampMagnitude(inputDir, 1f);
+
 
         // Only allow movement changes if player is grounded
         if (groundedPlayer == true)
         {
-            lastMoveDirection = move;
+            currentHorizontalVelocity = inputDir * playerSpeed;
         }
         else
         {
 
-            // If statement to see if the player has a double jump and still wants to jump in a different direction.
-            if (doubleJump && !usedDoubleJumpDirection && move != Vector3.zero)
+            // when there's input in the air.
+            if (inputDir != Vector3.zero)
             {
-                lastMoveDirection = move;
-                usedDoubleJumpDirection = true;
+                // Reduce the control in the air of the player
+                Vector3 targetVelocity = inputDir * playerSpeed;
+                currentHorizontalVelocity = Vector3.Lerp(
+                       currentHorizontalVelocity,
+                       targetVelocity,
+                       airControlFactor * Time.deltaTime
+                );
+
+
             }
-            // This makes it so that when in the air, it'll commit to the last move direction for a comitted jump
-            move = lastMoveDirection;
+            // For when there's no input in the air. It'll gradually slowdown the character.
+            else
+            {
+                currentHorizontalVelocity = Vector3.Lerp(
+                    currentHorizontalVelocity,
+                    Vector3.zero,
+                    airDeceleration * Time.deltaTime
+                );
+
+            }
         }
 
         // Rotation only when moving on ground.
-        if (groundedPlayer && move != Vector3.zero)
+        if (currentHorizontalVelocity != Vector3.zero)
         {
-            Quaternion targetRotation = Quaternion.LookRotation(move);
+            Quaternion targetRotation = Quaternion.LookRotation(currentHorizontalVelocity);
             transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * rotationSpeed);
-            transform.forward = move;
+            transform.forward = currentHorizontalVelocity;
         }
 
         // Calling the jump function
-        jumpFunction(move);
+        jumpFunction(inputDir);
 
         // Apply gravity
         playerVelocity.y += gravityValue * Time.deltaTime;
 
         // Combine horizontal and vertical movement
-        Vector3 finalMove = (move * playerSpeed) + (playerVelocity.y * Vector3.up);
+        Vector3 finalMove = currentHorizontalVelocity + (playerVelocity.y * Vector3.up);
+
 
         // Actually move and get collision flags
         CollisionFlags flags = controller.Move(finalMove * Time.deltaTime);
@@ -139,7 +171,7 @@ public class Movement : MonoBehaviour
     }
 
     /// <summary>
-    /// Function that saves how the player hit the wall and what side the wall is facing.
+    /// Helper Function that saves how the player hit the wall and what side the wall is facing.
     /// </summary>
     /// <param name="hit"></param>
     void OnControllerColliderHit(ControllerColliderHit hit)
