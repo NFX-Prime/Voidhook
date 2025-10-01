@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 3406057586779340377}
   - component: {fileID: 731045631155467257}
   - component: {fileID: 6749708648321500891}
-  - component: {fileID: 3711602553951023081}
+  - component: {fileID: -1452825999320244412}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -117,14 +117,18 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2703864832527900051}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f63685311c9a9fe4db44a8efad603f55, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveAction: {fileID: -1680190386980627800, guid: 289c1b55c9541489481df5cc06664110, type: 3}
-  jumpAction: {fileID: -2099379676528639254, guid: 289c1b55c9541489481df5cc06664110, type: 3}
---- !u!114 &3711602553951023081
+  doubleJump: 0
+  groundedPlayer: 0
+  moveAction: {fileID: 8609981554702192011, guid: 4ef96e97473e2214aa0de71490c07cb7, type: 3}
+  jumpAction: {fileID: -4826209839238324802, guid: 4ef96e97473e2214aa0de71490c07cb7, type: 3}
+  airControlFactor: 0.3
+  airDeceleration: 2
+--- !u!114 &-1452825999320244412
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -133,24 +137,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 2703864832527900051}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
+  m_Script: {fileID: 11500000, guid: e6d789dde287e5046a06871333d3e147, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Actions: {fileID: -944628639613478452, guid: 289c1b55c9541489481df5cc06664110, type: 3}
-  m_NotificationBehavior: 0
-  m_UIInputModule: {fileID: 0}
-  m_DeviceLostEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  m_DeviceRegainedEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  m_ControlsChangedEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  m_ActionEvents: []
-  m_NeverAutoSwitchControlSchemes: 0
-  m_DefaultControlScheme: 
-  m_DefaultActionMap: Player
-  m_SplitScreenIndex: -1
-  m_Camera: {fileID: 0}
+  shadowPrefab: {fileID: 2543665168629284507, guid: f95a109df176e12408ab68d46857dae8, type: 3}
+  shadowYOffset: 0.01
+  maxShadowDistance: 20

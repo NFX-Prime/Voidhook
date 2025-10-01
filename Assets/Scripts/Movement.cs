@@ -12,7 +12,7 @@ public class Movement : MonoBehaviour
     private float gravityValue = -9.81f;
     private float rotationSpeed = 4.0f;
 
-    private bool doubleJump = false;
+    public bool doubleJump = false;
     private bool dash = false;
 
 
@@ -143,21 +143,32 @@ public class Movement : MonoBehaviour
     }
 
 
-    void jumpFunction(Vector3 move)
+    /// <summary>
+    /// Function that handles jumping and double jumping
+    /// </summary>
+    /// <param name="move"></param>
+    void jumpFunction(Vector3 inputDir)
     {
-        // Jump
+        // Regular jump
         if (jumpAction.action.triggered && groundedPlayer)
         {
             playerVelocity.y = Mathf.Sqrt(jumpHeight * -2.0f * gravityValue);
             groundedPlayer = controller.isGrounded;
 
         }
+        // Double jump
         else if (jumpAction.action.triggered && doubleJump == false)
         {
             playerVelocity.y = Mathf.Sqrt(jumpHeight * -2.0f * gravityValue);
             // Prevents another double jump to happen.
             doubleJump = true;
             groundedPlayer = controller.isGrounded;
+
+            if (inputDir != Vector3.zero)
+            {
+
+                currentHorizontalVelocity = inputDir.normalized * playerSpeed;
+            }
         }
 
 
@@ -165,7 +176,7 @@ public class Movement : MonoBehaviour
         playerVelocity.y += gravityValue * Time.deltaTime;
 
         // Combine horizontal and vertical movement
-        Vector3 finalMove = (move * playerSpeed) + (playerVelocity.y * Vector3.up);
+        Vector3 finalMove = (inputDir * playerSpeed) + (playerVelocity.y * Vector3.up);
         controller.Move(finalMove * Time.deltaTime);
 
     }
