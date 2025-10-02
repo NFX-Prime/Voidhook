@@ -126,6 +126,15 @@ public partial class @CharacterInputActions: IInputActionCollection2, IDisposabl
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Walk"",
+                    ""type"": ""Button"",
+                    ""id"": ""2d8c2e9c-6dee-417d-9c1e-b8249a7dd192"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -357,6 +366,17 @@ public partial class @CharacterInputActions: IInputActionCollection2, IDisposabl
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Jump"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""0ba3cf32-0a32-40ab-adc3-1aa32e8e0f30"",
+                    ""path"": ""<Keyboard>/shift"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""Walk"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -948,6 +968,7 @@ public partial class @CharacterInputActions: IInputActionCollection2, IDisposabl
         m_Player_Look = m_Player.FindAction("Look", throwIfNotFound: true);
         m_Player_Fire = m_Player.FindAction("Fire", throwIfNotFound: true);
         m_Player_Jump = m_Player.FindAction("Jump", throwIfNotFound: true);
+        m_Player_Walk = m_Player.FindAction("Walk", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -1045,6 +1066,7 @@ public partial class @CharacterInputActions: IInputActionCollection2, IDisposabl
     private readonly InputAction m_Player_Look;
     private readonly InputAction m_Player_Fire;
     private readonly InputAction m_Player_Jump;
+    private readonly InputAction m_Player_Walk;
     /// <summary>
     /// Provides access to input actions defined in input action map "Player".
     /// </summary>
@@ -1072,6 +1094,10 @@ public partial class @CharacterInputActions: IInputActionCollection2, IDisposabl
         /// Provides access to the underlying input action "Player/Jump".
         /// </summary>
         public InputAction @Jump => m_Wrapper.m_Player_Jump;
+        /// <summary>
+        /// Provides access to the underlying input action "Player/Walk".
+        /// </summary>
+        public InputAction @Walk => m_Wrapper.m_Player_Walk;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -1110,6 +1136,9 @@ public partial class @CharacterInputActions: IInputActionCollection2, IDisposabl
             @Jump.started += instance.OnJump;
             @Jump.performed += instance.OnJump;
             @Jump.canceled += instance.OnJump;
+            @Walk.started += instance.OnWalk;
+            @Walk.performed += instance.OnWalk;
+            @Walk.canceled += instance.OnWalk;
         }
 
         /// <summary>
@@ -1133,6 +1162,9 @@ public partial class @CharacterInputActions: IInputActionCollection2, IDisposabl
             @Jump.started -= instance.OnJump;
             @Jump.performed -= instance.OnJump;
             @Jump.canceled -= instance.OnJump;
+            @Walk.started -= instance.OnWalk;
+            @Walk.performed -= instance.OnWalk;
+            @Walk.canceled -= instance.OnWalk;
         }
 
         /// <summary>
@@ -1461,6 +1493,13 @@ public partial class @CharacterInputActions: IInputActionCollection2, IDisposabl
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnJump(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "Walk" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnWalk(InputAction.CallbackContext context);
     }
     /// <summary>
     /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "UI" which allows adding and removing callbacks.

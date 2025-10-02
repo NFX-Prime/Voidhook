@@ -7,12 +7,13 @@ using static UnityEngine.GraphicsBuffer;
 
 public class Movement : MonoBehaviour
 {
-    private float playerSpeed = 5.0f;
     private float jumpHeight = 1.5f;
     private float gravityValue = -9.81f;
     private float rotationSpeed = 4.0f;
 
-    public bool doubleJump = false;
+    // Public bool to turn double jump on or off. Fale = on. True = off.
+    public bool turnDoubleJumpOff = false;
+    private bool doubleJump = false;
     private bool dash = false;
 
 
@@ -29,19 +30,26 @@ public class Movement : MonoBehaviour
     // Vector2 expected variable
     public InputActionReference moveAction; 
     // This variable is expecting a button
-    public InputActionReference jumpAction; 
+    public InputActionReference jumpAction;
+    // Input shift button for this one \/
+    public InputActionReference walkAction;
 
     [Header("Air Control Settings")]
     // How much control we can change in the air (0 = none, 1 = same as ground)
     public float airControlFactor = 0.3f; 
     // How quickly to slow down if no input in air.
-    public float airDeceleration = 2.0f;  
+    public float airDeceleration = 2.0f;
+
+    [Header("Movement Speeds")]
+    public float runSpeed = 5.0f;
+    public float walkSpeed = 2.0f;
+
 
     // Setting horizontal velocity.
     private Vector3 currentHorizontalVelocity = Vector3.zero;
 
     // Coyote Time
-    public float coyoteTime = 0.15f;
+    public float coyoteTime = 0.20f;
     public float coyoteTimeCounter;
 
 
@@ -49,6 +57,7 @@ public class Movement : MonoBehaviour
     private void Awake()
     {
         controller = gameObject.AddComponent<CharacterController>();
+        groundedPlayer = controller.isGrounded;
     }
 
     private void OnEnable()
@@ -65,20 +74,25 @@ public class Movement : MonoBehaviour
 
     void Update()
     {
-
+        // Seeing whether player is grounded or not.
         groundedPlayer = controller.isGrounded;
+
+
+        // Deciding what speed based on whether player is shifting or running
+        float targetSpeed = walkAction.action.IsPressed() ? walkSpeed : runSpeed;
 
         // If statement to check if player is on the ground
         if (groundedPlayer && playerVelocity.y < 0)
         {
             playerVelocity.y = 0f;
             // Resets double jump 
-            doubleJump = false;
+            doubleJump = turnDoubleJumpOff;
             // Reset direction of double jump
             usedDoubleJumpDirection = false;
 
             // Reset timer
             coyoteTimeCounter = coyoteTime;
+            
         }
         else
         {
@@ -95,7 +109,7 @@ public class Movement : MonoBehaviour
         // Only allow movement changes if player is grounded
         if (groundedPlayer == true)
         {
-            currentHorizontalVelocity = inputDir * playerSpeed;
+            currentHorizontalVelocity = inputDir * targetSpeed;
         }
         else
         {
@@ -104,7 +118,7 @@ public class Movement : MonoBehaviour
             if (inputDir != Vector3.zero)
             {
                 // Reduce the control in the air of the player
-                Vector3 targetVelocity = inputDir * playerSpeed;
+                Vector3 targetVelocity = inputDir * targetSpeed;
                 currentHorizontalVelocity = Vector3.Lerp(
                        currentHorizontalVelocity,
                        targetVelocity,
@@ -134,7 +148,7 @@ public class Movement : MonoBehaviour
         }
 
         // Calling the jump function
-        jumpFunction(inputDir);
+        jumpFunction(inputDir, targetSpeed);
 
         // Apply gravity
         playerVelocity.y += gravityValue * Time.deltaTime;
@@ -159,7 +173,7 @@ public class Movement : MonoBehaviour
     /// Function that handles jumping and double jumping
     /// </summary>
     /// <param name="move"></param>
-    void jumpFunction(Vector3 inputDir)
+    void jumpFunction(Vector3 inputDir, float targetSpeed)
     {
         // Regular jump
         if (jumpAction.action.triggered && (groundedPlayer || coyoteTimeCounter > 0f))
@@ -179,7 +193,7 @@ public class Movement : MonoBehaviour
             if (inputDir != Vector3.zero)
             {
 
-                currentHorizontalVelocity = inputDir.normalized * playerSpeed;
+                currentHorizontalVelocity = inputDir.normalized * targetSpeed;
             }
         }
 
@@ -188,7 +202,7 @@ public class Movement : MonoBehaviour
         playerVelocity.y += gravityValue * Time.deltaTime;
 
         // Combine horizontal and vertical movement
-        Vector3 finalMove = (inputDir * playerSpeed) + (playerVelocity.y * Vector3.up);
+        Vector3 finalMove = (inputDir * targetSpeed) + (playerVelocity.y * Vector3.up);
         controller.Move(finalMove * Time.deltaTime);
 
     }

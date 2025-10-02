@@ -62,6 +62,10 @@ namespace Platformer
             return context.control.device.name == "Mouse";
         }
 
+        public void OnWalk(InputAction.CallbackContext context)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 
 }
