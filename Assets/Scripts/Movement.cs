@@ -40,6 +40,11 @@ public class Movement : MonoBehaviour
     // Setting horizontal velocity.
     private Vector3 currentHorizontalVelocity = Vector3.zero;
 
+    // Coyote Time
+    public float coyoteTime = 0.15f;
+    public float coyoteTimeCounter;
+
+
 
     private void Awake()
     {
@@ -71,6 +76,13 @@ public class Movement : MonoBehaviour
             doubleJump = false;
             // Reset direction of double jump
             usedDoubleJumpDirection = false;
+
+            // Reset timer
+            coyoteTimeCounter = coyoteTime;
+        }
+        else
+        {
+            coyoteTimeCounter -= Time.deltaTime;
         }
 
         // Read input only if in joint in the
@@ -150,11 +162,11 @@ public class Movement : MonoBehaviour
     void jumpFunction(Vector3 inputDir)
     {
         // Regular jump
-        if (jumpAction.action.triggered && groundedPlayer)
+        if (jumpAction.action.triggered && (groundedPlayer || coyoteTimeCounter > 0f))
         {
             playerVelocity.y = Mathf.Sqrt(jumpHeight * -2.0f * gravityValue);
             groundedPlayer = controller.isGrounded;
-
+            coyoteTimeCounter = 0f;
         }
         // Double jump
         else if (jumpAction.action.triggered && doubleJump == false)
