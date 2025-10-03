@@ -332,6 +332,7 @@ public class FishingSystem : MonoBehaviour
         {
             Destroy(fishObject);
             Debug.Log("🎣 You caught a fish!");
+            GameManager.Instance.AddFish(); 
         }
         // If not succesfully caught a fish
         else
