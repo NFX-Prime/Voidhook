@@ -269,16 +269,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dacca54d1171d7d4ebf9856d593a7440, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pondCenter: {fileID: 0}
+  pondCenter: {fileID: 6541445390635215474, guid: b2d131efbe0aa1d40a36a42f02f6e920, type: 3}
   castRange: 10
   isFishing: 0
   catchProgress: 0
   lineLength: 15
   minTension: 2
-  maxTension: 5
+  maxTension: 15
   reelForce: 2
-  fishPullStrength: 1
+  fishPullStrength: 3
   fishChangeDirTime: 2
   tugStrength: 3
   tugDamping: 5
+  pondCollider: {fileID: 1587342039714643721, guid: b2d131efbe0aa1d40a36a42f02f6e920, type: 3}
+  fishPrefab: {fileID: 411070408041363775, guid: 09194cb956a90a44b92ce42e33d20653, type: 3}
   alignment: 0
+  currentSpeed: 0

@@ -44,12 +44,14 @@ public class FishingSystem : MonoBehaviour
     // How fast it fades away
     public float tugDamping = 5f;
 
-
     // Assign pond gameobject collider in inspector
     [Header("Pond Settings")]
-    public Collider pondCollider; 
+    public Collider pondCollider;
 
-
+    [Header("Fish Settings")]
+    // Assign the fish object in the inspector
+    public GameObject fishPrefab;
+    private GameObject fishObject;
 
     // Further fish physics
     [SerializeField]
@@ -130,6 +132,19 @@ public class FishingSystem : MonoBehaviour
 
         // Show line
         lineRenderer.enabled = true;
+
+        // Destroy previous fish object if it exists
+        if (fishObject != null)
+        {
+            Destroy(fishObject);
+        }
+
+        // Instantiate new fish at the target position
+        if (fishPrefab != null)
+        {
+            fishObject = Instantiate(fishPrefab, fishTarget.position, Quaternion.identity);
+        }
+
     }
     
     /// <summary>
@@ -169,6 +184,7 @@ public class FishingSystem : MonoBehaviour
         currentSpeed = fishPullStrength;
         Vector3 baseVelocity = fishDirection * currentSpeed;
 
+        // Tug for the slowed down of the fish.
         Vector3 appliedTug = Vector3.zero;
 
         // When pulling mostly opposite fish movement/direction. -1 = perfectly opposite to fish pull, 0 = perpendicular, +1 = same direction
@@ -186,11 +202,8 @@ public class FishingSystem : MonoBehaviour
         // Applying it to velocity
         targetVelocity = baseVelocity + tugImpulse;
 
+        // Putting it into a new position to temporarily hold
         Vector3 newPosition = fishTarget.position + targetVelocity * Time.deltaTime;
-        // Adapting Fish velocity
-        /*
-        fishVelocity = Vector3.Lerp(fishVelocity, targetVelocity + tugImpulse, Time.deltaTime * 5f);
-        */
 
         // Taking pond and using its collider coordinates to make sure the fish won't go out of the bounds of the pond.
         if (pondCollider != null)
@@ -204,6 +217,18 @@ public class FishingSystem : MonoBehaviour
 
         // Move fish
         fishTarget.position = newPosition;
+
+        // Move the visible fish object to match fishTarget
+        if (fishObject != null)
+        {
+            fishObject.transform.position = fishTarget.position;
+        }
+
+        // Making the fish rotate to face the direction it's going.
+        if (fishObject != null && targetVelocity != Vector3.zero)
+        {
+            fishObject.transform.rotation = Quaternion.LookRotation(targetVelocity);
+        }
 
         // Update reel line positions. This dot sets the line from the player.
         lineRenderer.SetPosition(0, transform.position + Vector3.up * 1f);
@@ -281,11 +306,13 @@ public class FishingSystem : MonoBehaviour
         // If succesfully caught a fish
         if (caught)
         {
+            Destroy(fishObject);
             Debug.Log("🎣 You caught a fish!");
         }
         // If not succesfully caught a fish
         else
         {
+            Destroy(fishObject);
             // Print out last location of fish
             Debug.Log("Last location: x:" + fishTarget.position.x + " y: " + fishTarget.position.y + " z: " + fishTarget.position.z + " Distance: " + dist);
             Debug.Log("❌ The fish escaped...");
