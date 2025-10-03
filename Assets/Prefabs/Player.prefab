@@ -18,7 +18,7 @@ GameObject:
   - component: {fileID: -2884077453672404340}
   m_Layer: 0
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -133,6 +133,7 @@ MonoBehaviour:
   airDeceleration: 2
   runSpeed: 5
   walkSpeed: 2
+  isWalking: 0
   coyoteTime: 0.2
   coyoteTimeCounter: 0
 --- !u!114 &-1452825999320244412
@@ -283,5 +284,6 @@ MonoBehaviour:
   tugDamping: 5
   pondCollider: {fileID: 1587342039714643721, guid: b2d131efbe0aa1d40a36a42f02f6e920, type: 3}
   fishPrefab: {fileID: 411070408041363775, guid: 09194cb956a90a44b92ce42e33d20653, type: 3}
+  catchProgressBar: {fileID: 7656283756195900700, guid: 6a97f90d42838aa459829fdd24e88afb, type: 3}
   alignment: 0
   currentSpeed: 0

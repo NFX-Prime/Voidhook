@@ -44,6 +44,8 @@ public class Movement : MonoBehaviour
     public float runSpeed = 5.0f;
     public float walkSpeed = 2.0f;
 
+    // Bool for enemy behavior
+    public bool isWalking = false;
 
     // Setting horizontal velocity.
     private Vector3 currentHorizontalVelocity = Vector3.zero;
@@ -156,6 +158,8 @@ public class Movement : MonoBehaviour
         // Combine horizontal and vertical movement
         Vector3 finalMove = currentHorizontalVelocity + (playerVelocity.y * Vector3.up);
 
+        // Walking = player is pressing any movement input and NOT holding shift
+        isWalking = walkAction.action.IsPressed();
 
         // Actually move and get collision flags
         CollisionFlags flags = controller.Move(finalMove * Time.deltaTime);
