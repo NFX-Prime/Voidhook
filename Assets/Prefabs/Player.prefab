@@ -277,5 +277,8 @@ MonoBehaviour:
   minTension: 2
   maxTension: 5
   reelForce: 2
-  fishPullStrength: 3
+  fishPullStrength: 1
   fishChangeDirTime: 2
+  tugStrength: 3
+  tugDamping: 5
+  alignment: 0

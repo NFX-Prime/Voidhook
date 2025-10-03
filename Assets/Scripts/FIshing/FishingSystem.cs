@@ -44,9 +44,17 @@ public class FishingSystem : MonoBehaviour
     // How fast it fades away
     public float tugDamping = 5f;
 
+
+    // Assign pond gameobject collider in inspector
+    [Header("Pond Settings")]
+    public Collider pondCollider; 
+
+
+
     // Further fish physics
     [SerializeField]
     private float alignment;
+    [SerializeField]
     private float currentSpeed;
     private Vector3 targetVelocity;
 
@@ -133,10 +141,9 @@ public class FishingSystem : MonoBehaviour
         fishTimer -= Time.deltaTime;
         if (fishTimer <= 0)
         {
-            // Changes direction
+            // Get random direction
             fishDirection = Random.insideUnitSphere;
-            // Always have the y direction be 0 (I think we'll keep the fishing to a flat plane for now.
-            // Later on we can do weird waterfall fishing if we're higher IQ.
+            // Make sure the Y value isn't changed.
             fishDirection.y = 0;
             fishDirection.Normalize();
             fishTimer = fishChangeDirTime;
@@ -158,30 +165,45 @@ public class FishingSystem : MonoBehaviour
         // Compare tug with fish direction (opposite)
         alignment = Vector3.Dot(fishDirection.normalized, tugDir);
 
-        // Determining fish pull strength
+        // Determining fish pull speed based on pull strength
         currentSpeed = fishPullStrength;
+        Vector3 baseVelocity = fishDirection * currentSpeed;
+
+        Vector3 appliedTug = Vector3.zero;
 
         // When pulling mostly opposite fish movement/direction. -1 = perfectly opposite to fish pull, 0 = perpendicular, +1 = same direction
         if (alignment < -0.3f) 
         {
             // Reduce fish movement speed when tugging against it
-            currentSpeed *= 0.4f;
+            currentSpeed *= 0.3f;
             // Apply a jerk effect (tug impulse)
-            tugImpulse += -tugDir * tugStrength * (-alignment); 
+            appliedTug = -tugDir * tugStrength * (-alignment); 
         }
-        // Applying it to velocity
-        targetVelocity = fishDirection * currentSpeed;
-
-        // Adapting Fish velocity
-        fishVelocity = Vector3.Lerp(fishVelocity, targetVelocity + tugImpulse, Time.deltaTime * 5f);
 
         // Dampening tug impulse
         tugImpulse = Vector3.Lerp(tugImpulse, Vector3.zero, Time.deltaTime * tugDamping);
 
+        // Applying it to velocity
+        targetVelocity = baseVelocity + tugImpulse;
+
+        Vector3 newPosition = fishTarget.position + targetVelocity * Time.deltaTime;
+        // Adapting Fish velocity
+        /*
+        fishVelocity = Vector3.Lerp(fishVelocity, targetVelocity + tugImpulse, Time.deltaTime * 5f);
+        */
+
+        // Taking pond and using its collider coordinates to make sure the fish won't go out of the bounds of the pond.
+        if (pondCollider != null)
+        {
+            Bounds bounds = pondCollider.bounds;
+            float clampedX = Mathf.Clamp(newPosition.x, bounds.min.x, bounds.max.x);
+            float clampedZ = Mathf.Clamp(newPosition.z, bounds.min.z, bounds.max.z);
+            float clampedY = pondCenter.position.y; // Keep fish at pond's Y level
+            newPosition = new Vector3(clampedX, clampedY, clampedZ);
+        }
+
         // Move fish
-        fishTarget.position += fishVelocity * Time.deltaTime;
-        // Clamping to pond center height
-        fishTarget.position = new Vector3(fishTarget.position.x, pondCenter.position.y, fishTarget.position.z);
+        fishTarget.position = newPosition;
 
         // Update reel line positions. This dot sets the line from the player.
         lineRenderer.SetPosition(0, transform.position + Vector3.up * 1f);
@@ -199,24 +221,19 @@ public class FishingSystem : MonoBehaviour
             return;
         }
 
-        // If the player is too close to the fishing line, it'll lose progress.
-        if (dist < minTension) 
+        // Catch progress logic
+        if (alignment < -0.3f && dist >= minTension && dist <= maxTension)
         {
-
-            // Lose progress
-            catchProgress = Mathf.Max(0, catchProgress - (Time.deltaTime/4));
-        }
-        // Good zone (Not too close, and line hasn't broken)
-        else if (dist < maxTension)
-        {
+            // Only increase if tugging mostly opposite and in the valid range
             float mid = (minTension + maxTension) / 2f;
-            float alignmentProgress = 1f - Mathf.Abs(dist - mid) / (maxTension - minTension);
-
-            // Boost if pulling opposite of fish
-            float tugBonus = (alignment < -0.3f) ? 1.5f : 1f;
-
-            // Add to catch progress
-            catchProgress += alignmentProgress * reelForce * tugBonus * Time.deltaTime;
+            // still encourages keeping a good distance
+            float distanceFactor = 1f - Mathf.Abs(dist - mid) / (maxTension - minTension);
+            catchProgress += distanceFactor * reelForce * Time.deltaTime;
+        }
+        else
+        {
+            // If not tugging correctly, lose a little progress over time
+            catchProgress = Mathf.Max(0f, catchProgress - Time.deltaTime / 4f);
         }
 
         /*
