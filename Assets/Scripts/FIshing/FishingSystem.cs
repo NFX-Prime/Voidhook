@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 [RequireComponent(typeof(LineRenderer))]
 public class FishingSystem : MonoBehaviour
@@ -52,6 +53,10 @@ public class FishingSystem : MonoBehaviour
     // Assign the fish object in the inspector
     public GameObject fishPrefab;
     private GameObject fishObject;
+
+    [Header("UI")]
+    // To hold the progressbar
+    public Slider catchProgressBar;
 
     // Further fish physics
     [SerializeField]
@@ -143,6 +148,12 @@ public class FishingSystem : MonoBehaviour
         if (fishPrefab != null)
         {
             fishObject = Instantiate(fishPrefab, fishTarget.position, Quaternion.identity);
+        }
+
+        // Start catch progress bar
+        if (catchProgressBar != null)
+        {
+            catchProgressBar.value = 0f;
         }
 
     }
@@ -285,6 +296,12 @@ public class FishingSystem : MonoBehaviour
         }
         */
 
+        // Update catch progress bar
+        if (catchProgressBar != null)
+        {
+            catchProgressBar.value = catchProgress / catchThreshold;
+        }
+
         // If succesful catch
         if (catchProgress >= catchThreshold)
         {
@@ -302,6 +319,13 @@ public class FishingSystem : MonoBehaviour
         isFishing = false;
         // Hide line. No longer needed
         lineRenderer.enabled = false; 
+
+        // Reset catch progress bar
+        if (catchProgressBar != null)
+        {
+            catchProgressBar.value = 0f;
+        }
+
 
         // If succesfully caught a fish
         if (caught)
