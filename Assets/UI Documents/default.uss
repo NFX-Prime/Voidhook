@@ -1,0 +1,6 @@
+.FishBox {
+    transition-property: position;
+    transition-duration: 20ms;
+    transition-timing-function: ease-in;
+    position: absolute;
+}
