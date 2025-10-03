@@ -28,6 +28,24 @@ public class FishingSystem : MonoBehaviour
     public float fishChangeDirTime = 2f; 
     private float fishTimer;
     private Vector3 fishDirection;
+    // Float to hold distance of fish to player.
+    private float dist;
+
+    /// <summary>
+    /// "Tugging" is essentially the feedback for the fish moving so that the player can feel the fish being alive.
+    /// </summary>
+    [Header("Tugging")]
+    // Current fish velocity
+    private Vector3 fishVelocity;
+    // Temporary tug impulse 
+    private Vector3 tugImpulse;
+    // How strong the tug will feel
+    public float tugStrength = 3f;
+    // How fast it fades away
+    public float tugDamping = 5f;
+
+    // Further fish physics
+    private float alignment;
 
     // Line Renderer - This is our reel
     private LineRenderer lineRenderer;
@@ -40,7 +58,7 @@ public class FishingSystem : MonoBehaviour
         lineRenderer.positionCount = 2;
         lineRenderer.startWidth = 0.05f;
         lineRenderer.endWidth = 0.02f;
-        // Just getting a new material. Can set it to a different acutaly asset material later.
+        // Just getting a new material. Can set it to a different acutal asset material later.
         lineRenderer.material = new Material(Shader.Find("Sprites/Default"));
         lineRenderer.startColor = Color.white;
         lineRenderer.endColor = Color.gray;
@@ -117,16 +135,41 @@ public class FishingSystem : MonoBehaviour
             fishDirection.y = 0;
             fishTimer = fishChangeDirTime;
         }
-        // Constantly updates direction.
-        fishTarget.position += fishDirection.normalized * fishPullStrength * Time.deltaTime;
 
-        // Update line positions. This dot sets the line from the player.
+        // NEW FISHING SYSTEM
+        // This one is more in line with Taryn's fishing concept. You Essentially use the mouse to tug the fish in the opposite direction to catch it. Must still be in a decent amount of length away from the fish though (taken from old system). So its both WASD movement and mouse movement. Maybe too much?
+
+        // 1. Get mouse direction from screen center
+        Vector3 mouseWorld = Camera.main.ScreenToWorldPoint(
+                new Vector3(Mouse.current.position.x.ReadValue(), Mouse.current.position.y.ReadValue(), 10f)
+            );
+
+        // 2. Convert to world-space direction on XZ plane
+        Vector3 tugDir = (mouseWorld - transform.position).normalized;
+
+        // 3. Compare tug with fish direction (opposite)
+        float alignment = Vector3.Dot(fishDirection.normalized, tugDir);
+        // +1 = perfectly opposite to fish pull, 0 = perpendicular, -1 = same direction
+
+        // When pulling mostly opposite fish movement/direction
+        if (alignment < -0.3f) 
+        {
+            // Reduce fish movement speed when tugging against it
+            fishTarget.position += fishDirection.normalized * (fishPullStrength * 0.4f) * Time.deltaTime;
+        }
+        else
+        {
+            // Normal Fish movement
+            fishTarget.position += fishDirection.normalized * fishPullStrength * Time.deltaTime;
+        }
+
+        // Update reel line positions. This dot sets the line from the player.
         lineRenderer.SetPosition(0, transform.position + Vector3.up * 1f);
         // This dot sets the other end of the line that is on the fish.
         lineRenderer.SetPosition(1, fishTarget.position);
 
-        // Check distance
-        float dist = Vector3.Distance(transform.position, fishTarget.position);
+        // Get distance from player to fish.
+        dist = Vector3.Distance(transform.position, fishTarget.position);
 
         // If line is too far away, it breaks (fish gets away)
         if (dist > lineLength) 
@@ -138,7 +181,21 @@ public class FishingSystem : MonoBehaviour
         // If the player is too close to the fishing line, it'll lose progress.
         if (dist < minTension) 
         {
-            catchProgress = Mathf.Max(0, catchProgress - Time.deltaTime);
+
+            // Lose progress
+            catchProgress = Mathf.Max(0, catchProgress - (Time.deltaTime/4));
+        }
+        // Good zone (Not too close, and line hasn't broken)
+        else if (dist < maxTension)
+        {
+            float mid = (minTension + maxTension) / 2f;
+            float alignmentProgress = 1f - Mathf.Abs(dist - mid) / (maxTension - minTension);
+
+            // Boost if pulling opposite of fish
+            float tugBonus = (alignment < -0.3f) ? 1.5f : 1f;
+
+            // Add to catch progress
+            catchProgress += alignmentProgress * reelForce * tugBonus * Time.deltaTime;
         }
 
         /*
@@ -152,24 +209,9 @@ public class FishingSystem : MonoBehaviour
             catchProgress += alignment * reelForce * Time.deltaTime;
         }
         */
-
-        // NEW FISHING SYSTEM
-        // This one is more in line with Taryn's fishing concept. You Essentially use the mouse to tug the fish in the opposite direction to catch it. Must still be in a decent amount of length away from the fish though (taken from old system). So its both WASD movement and mouse movement. Maybe too much?
-
-        // 1. Get mouse direction from screen center
-        Vector2 mouse = Mouse.current.position.ReadValue();
-        Vector2 screenCenter = new Vector2(Screen.width / 2f, Screen.height / 2f);
-        Vector2 mouseDir = (mouse - screenCenter).normalized;
-
-        // 2. Convert to world-space direction on XZ plane
-        Vector3 tugDir = new Vector3(mouseDir.x, 0, mouseDir.y);
-
-        // 3. Compare tug with fish direction (opposite)
-        float alignment = Vector3.Dot(tugDir, -fishDirection.normalized);
-        // +1 = perfectly opposite to fish pull, 0 = perpendicular, -1 = same direction
-
+        /*
         // Mouse must be somewhat opposite from the direction of the fish.
-        if (alignment > 0.2f) 
+        if (alignment > 0.2f)
         {
             catchProgress += alignment * reelForce * Time.deltaTime;
         }
@@ -178,6 +220,7 @@ public class FishingSystem : MonoBehaviour
             // If not tugging correctly, lose progress.
             catchProgress = Mathf.Max(0, catchProgress - Time.deltaTime); // lose progress if not tugging correctly
         }
+        */
 
         // If succesful catch
         if (catchProgress >= catchThreshold)
