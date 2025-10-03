@@ -14,12 +14,12 @@ public class FishingSystem : MonoBehaviour
 
     // PHYSICS FOR THE FISHING LINE ITSELF. CHANGE VALUES WHEN NECESSARY!
     [Header("Line Physics")]
-    // Max length before breaking
+    // Length of line
     public float lineLength = 15f;        
     // Too close = slack
     public float minTension = 2f;        
     // Too far = break
-    public float maxTension = 5f;        
+    public float maxTension = 15f;        
     // How much pulling helps progress
     public float reelForce = 2f;         
     // How strongly fish moves
@@ -45,7 +45,10 @@ public class FishingSystem : MonoBehaviour
     public float tugDamping = 5f;
 
     // Further fish physics
+    [SerializeField]
     private float alignment;
+    private float currentSpeed;
+    private Vector3 targetVelocity;
 
     // Line Renderer - This is our reel
     private LineRenderer lineRenderer;
@@ -89,6 +92,7 @@ public class FishingSystem : MonoBehaviour
             else
             {
                 StopFishing(false);
+                Debug.Log("You let go early...");
             }
         }
     }
@@ -129,39 +133,55 @@ public class FishingSystem : MonoBehaviour
         fishTimer -= Time.deltaTime;
         if (fishTimer <= 0)
         {
+            // Changes direction
             fishDirection = Random.insideUnitSphere;
             // Always have the y direction be 0 (I think we'll keep the fishing to a flat plane for now.
             // Later on we can do weird waterfall fishing if we're higher IQ.
             fishDirection.y = 0;
+            fishDirection.Normalize();
             fishTimer = fishChangeDirTime;
         }
 
         // NEW FISHING SYSTEM
         // This one is more in line with Taryn's fishing concept. You Essentially use the mouse to tug the fish in the opposite direction to catch it. Must still be in a decent amount of length away from the fish though (taken from old system). So its both WASD movement and mouse movement. Maybe too much?
 
-        // 1. Get mouse direction from screen center
+        // Get mouse direction from screen center
         Vector3 mouseWorld = Camera.main.ScreenToWorldPoint(
                 new Vector3(Mouse.current.position.x.ReadValue(), Mouse.current.position.y.ReadValue(), 10f)
-            );
+        );
 
-        // 2. Convert to world-space direction on XZ plane
+        // Convert to world-space direction on XZ plane
         Vector3 tugDir = (mouseWorld - transform.position).normalized;
+        tugDir.y = 0;
+        tugDir.Normalize();
 
-        // 3. Compare tug with fish direction (opposite)
-        float alignment = Vector3.Dot(fishDirection.normalized, tugDir);
-        // +1 = perfectly opposite to fish pull, 0 = perpendicular, -1 = same direction
+        // Compare tug with fish direction (opposite)
+        alignment = Vector3.Dot(fishDirection.normalized, tugDir);
 
-        // When pulling mostly opposite fish movement/direction
+        // Determining fish pull strength
+        currentSpeed = fishPullStrength;
+
+        // When pulling mostly opposite fish movement/direction. -1 = perfectly opposite to fish pull, 0 = perpendicular, +1 = same direction
         if (alignment < -0.3f) 
         {
             // Reduce fish movement speed when tugging against it
-            fishTarget.position += fishDirection.normalized * (fishPullStrength * 0.4f) * Time.deltaTime;
+            currentSpeed *= 0.4f;
+            // Apply a jerk effect (tug impulse)
+            tugImpulse += -tugDir * tugStrength * (-alignment); 
         }
-        else
-        {
-            // Normal Fish movement
-            fishTarget.position += fishDirection.normalized * fishPullStrength * Time.deltaTime;
-        }
+        // Applying it to velocity
+        targetVelocity = fishDirection * currentSpeed;
+
+        // Adapting Fish velocity
+        fishVelocity = Vector3.Lerp(fishVelocity, targetVelocity + tugImpulse, Time.deltaTime * 5f);
+
+        // Dampening tug impulse
+        tugImpulse = Vector3.Lerp(tugImpulse, Vector3.zero, Time.deltaTime * tugDamping);
+
+        // Move fish
+        fishTarget.position += fishVelocity * Time.deltaTime;
+        // Clamping to pond center height
+        fishTarget.position = new Vector3(fishTarget.position.x, pondCenter.position.y, fishTarget.position.z);
 
         // Update reel line positions. This dot sets the line from the player.
         lineRenderer.SetPosition(0, transform.position + Vector3.up * 1f);
@@ -175,6 +195,7 @@ public class FishingSystem : MonoBehaviour
         if (dist > lineLength) 
         {
             StopFishing(false);
+            // End fishing program.
             return;
         }
 
@@ -248,6 +269,8 @@ public class FishingSystem : MonoBehaviour
         // If not succesfully caught a fish
         else
         {
+            // Print out last location of fish
+            Debug.Log("Last location: x:" + fishTarget.position.x + " y: " + fishTarget.position.y + " z: " + fishTarget.position.z + " Distance: " + dist);
             Debug.Log("❌ The fish escaped...");
         }
     }
