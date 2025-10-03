@@ -168,16 +168,16 @@ public class FishingSystem : MonoBehaviour
         float alignment = Vector3.Dot(tugDir, -fishDirection.normalized);
         // +1 = perfectly opposite to fish pull, 0 = perpendicular, -1 = same direction
 
-        if (alignment > 0.2f) // must be somewhat opposite
+        // Mouse must be somewhat opposite from the direction of the fish.
+        if (alignment > 0.2f) 
         {
             catchProgress += alignment * reelForce * Time.deltaTime;
         }
         else
         {
+            // If not tugging correctly, lose progress.
             catchProgress = Mathf.Max(0, catchProgress - Time.deltaTime); // lose progress if not tugging correctly
         }
-
-
 
         // If succesful catch
         if (catchProgress >= catchThreshold)
