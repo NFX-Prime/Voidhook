@@ -4533,6 +4533,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6749708648321500891, guid: b0b5cf5c2b4271742bdda9054b2795d4, type: 3}
+      propertyPath: isWalking
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6749708648321500891, guid: b0b5cf5c2b4271742bdda9054b2795d4, type: 3}
       propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
@@ -4544,6 +4548,10 @@ PrefabInstance:
       propertyPath: moveAction
       value: 
       objectReference: {fileID: 8609981554702192011, guid: 4ef96e97473e2214aa0de71490c07cb7, type: 3}
+    - target: {fileID: 6749708648321500891, guid: b0b5cf5c2b4271742bdda9054b2795d4, type: 3}
+      propertyPath: currentSpeed
+      value: 5
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 0}
     - {fileID: -1452825999320244412, guid: b0b5cf5c2b4271742bdda9054b2795d4, type: 3}

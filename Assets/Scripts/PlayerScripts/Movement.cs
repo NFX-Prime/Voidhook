@@ -1,5 +1,6 @@
 // This first example shows how to move using Input System Package (New)
 
+using Unity.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UIElements;
@@ -43,6 +44,9 @@ public class Movement : MonoBehaviour
     public float runSpeed = 5.0f;
     public float walkSpeed = 2.0f;
 
+    [ReadOnly]
+    public float currentSpeed = 0f;
+
     // Bool for enemy behavior
     public bool isWalking = false;
 
@@ -83,7 +87,9 @@ public class Movement : MonoBehaviour
 
 
         // Deciding what speed based on whether player is shifting or running
-        float targetSpeed = walkAction.action.IsPressed() ? walkSpeed : runSpeed;
+        // If walking is pressed, will be walk speed.
+        // If not, then player is running, and will be set to run speed.
+        currentSpeed = walkAction.action.IsPressed() ? walkSpeed : runSpeed;
 
         // If statement to check if player is on the ground
         if (groundedPlayer && playerVelocity.y < 0)
@@ -101,17 +107,20 @@ public class Movement : MonoBehaviour
             coyoteTimeCounter -= Time.deltaTime;
         }
 
-        // Read input only if in joint in the
+        // Read WASD input using the moveAction input.
         Vector2 input = moveAction.action.ReadValue<Vector2>();
 
+        // Gets direction of the WASD keys and maps them into a vector we can use.
         Vector3 inputDir = new Vector3(input.x, 0, input.y);
+
+        // Clamp vector to just 1f so we can use it for movement. Might need to change this if we use joystick.
         inputDir = Vector3.ClampMagnitude(inputDir, 1f);
 
 
         // Only allow movement changes if player is grounded
         if (groundedPlayer == true)
         {
-            currentHorizontalVelocity = inputDir * targetSpeed;
+            currentHorizontalVelocity = inputDir * currentSpeed;
         }
         else
         {
@@ -120,7 +129,7 @@ public class Movement : MonoBehaviour
             if (inputDir != Vector3.zero)
             {
                 // Reduce the control in the air of the player
-                Vector3 targetVelocity = inputDir * targetSpeed;
+                Vector3 targetVelocity = inputDir * currentSpeed;
                 currentHorizontalVelocity = Vector3.Lerp(
                        currentHorizontalVelocity,
                        targetVelocity,
@@ -150,7 +159,7 @@ public class Movement : MonoBehaviour
         }
 
         // Calling the jump function
-        jumpFunction(inputDir, targetSpeed);
+        jumpFunction(inputDir, currentSpeed);
 
         // Apply gravity
         playerVelocity.y += gravityValue * Time.deltaTime;
@@ -177,7 +186,7 @@ public class Movement : MonoBehaviour
     /// Function that handles jumping and double jumping
     /// </summary>
     /// <param name="move"></param>
-    void jumpFunction(Vector3 inputDir, float targetSpeed)
+    void jumpFunction(Vector3 inputDir, float currentSpeed)
     {
         // Regular jump
         if (jumpAction.action.triggered && (groundedPlayer || coyoteTimeCounter > 0f))
@@ -194,10 +203,11 @@ public class Movement : MonoBehaviour
             doubleJump = true;
             groundedPlayer = controller.isGrounded;
 
+            // This if input checks if the direction is different, which allows the player to jump to a different side much easier. Disallow this if we don't want the player to be able to do this.
             if (inputDir != Vector3.zero)
             {
-
-                currentHorizontalVelocity = inputDir.normalized * targetSpeed;
+                // Calculates new Horizontal velocity to be changed and accomodated to the Update() function.
+                currentHorizontalVelocity = inputDir.normalized * currentSpeed;
             }
         }
 
@@ -205,8 +215,8 @@ public class Movement : MonoBehaviour
         // Apply gravity
         playerVelocity.y += gravityValue * Time.deltaTime;
 
-        // Combine horizontal and vertical movement
-        Vector3 finalMove = (inputDir * targetSpeed) + (playerVelocity.y * Vector3.up);
+        
+        Vector3 finalMove = (inputDir * currentSpeed) + (playerVelocity.y * Vector3.up);
         controller.Move(finalMove * Time.deltaTime);
 
     }
