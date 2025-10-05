@@ -11,20 +11,25 @@ public class PlayerShadow : MonoBehaviour
     // Maximum raycast length. Change as needed.
     public float maxShadowDistance = 20f;
 
-    private float scale = 0f; 
+    // Scale variable to change size of shadow based on distance from ground (DOESNT WORK RN)
+    //private float scale = 0f; 
+
+    // Setting ray up
+    Ray ray;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         // Instantiating shadow underneath player
         shadowInstance = Instantiate(shadowPrefab);
+        
     }
 
     // Update is called once per frame
     void Update()
     {
         // Casting ray straight below player
-        Ray ray = new Ray(transform.position, Vector3.down);
+        ray = new Ray(transform.position, Vector3.down);
 
         // Checking to see if ray hit something below
         if (Physics.Raycast(ray, out RaycastHit hit, maxShadowDistance))

@@ -14,15 +14,14 @@ public class Movement : MonoBehaviour
     // Public bool to turn double jump on or off. Fale = on. True = off.
     public bool turnDoubleJumpOff = false;
     private bool doubleJump = false;
-    private bool dash = false;
+    // Potential dash button to be made in the future (maybe)
+    // private bool dash = false;
 
 
     private CharacterController controller;
     private Vector3 playerVelocity;
     public bool groundedPlayer;
     private Vector3 lastMoveDirection = Vector3.zero;
-    // Variable to track if direction was reset midair
-    private bool usedDoubleJumpDirection = false;
     // Variable to hold what direction to "slide" down like mario64 when hitting a wall.
     private Vector3 lastWallNormal = Vector3.zero;
 
@@ -53,6 +52,9 @@ public class Movement : MonoBehaviour
     // Coyote Time
     public float coyoteTime = 0.20f;
     public float coyoteTimeCounter;
+
+    // Collisions
+    CollisionFlags flags;
 
 
 
@@ -89,8 +91,6 @@ public class Movement : MonoBehaviour
             playerVelocity.y = 0f;
             // Resets double jump 
             doubleJump = turnDoubleJumpOff;
-            // Reset direction of double jump
-            usedDoubleJumpDirection = false;
 
             // Reset timer
             coyoteTimeCounter = coyoteTime;
@@ -116,7 +116,7 @@ public class Movement : MonoBehaviour
         else
         {
 
-            // when there's input in the air.
+            // When there's input in the air.
             if (inputDir != Vector3.zero)
             {
                 // Reduce the control in the air of the player
@@ -132,12 +132,12 @@ public class Movement : MonoBehaviour
             // For when there's no input in the air. It'll gradually slowdown the character.
             else
             {
+                // Same lerp function but use airDeceleration since the player isn't inputting anything and Vector3.zero for the 2nd vector 
                 currentHorizontalVelocity = Vector3.Lerp(
                     currentHorizontalVelocity,
                     Vector3.zero,
                     airDeceleration * Time.deltaTime
                 );
-
             }
         }
 
@@ -162,7 +162,7 @@ public class Movement : MonoBehaviour
         isWalking = walkAction.action.IsPressed();
 
         // Actually move and get collision flags
-        CollisionFlags flags = controller.Move(finalMove * Time.deltaTime);
+        flags = controller.Move(finalMove * Time.deltaTime);
 
         // If we hit a wall, slide along it
         if ((flags & CollisionFlags.Sides) != 0 && lastWallNormal != Vector3.zero)
