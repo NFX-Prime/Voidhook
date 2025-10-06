@@ -1,8 +1,8 @@
 <ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
-    <Style src="project://database/Assets/UI%20Documents/default.uss?fileID=7433441132597879392&amp;guid=271e81e1a97ab9b4085d47375d67b657&amp;type=3#default" />
-    <ui:VisualElement style="flex-grow: 1; background-image: url(&quot;project://database/Assets/UI%20Documents/Asset%20(41).png?fileID=2800000&amp;guid=db9e3309dc932b24eaa5782a30704ed5&amp;type=3#Asset (41)&quot;); background-repeat: no-repeat no-repeat; -unity-background-scale-mode: scale-to-fit;">
+    <Style src="project://database/Assets/UI%20Documents/default.uss?fileID=7433441132597879392&amp;guid=271e81e1a97ab9b4085d47375d67b657&amp;type=3" />
+    <ui:VisualElement name="FishPanel" class="FishBox" style="flex-grow: 1; background-image: url(&quot;project://database/Assets/UI%20Documents/Asset%20(41).png?fileID=2800000&amp;guid=db9e3309dc932b24eaa5782a30704ed5&amp;type=3#Asset (41)&quot;); background-repeat: repeat no-repeat; -unity-background-scale-mode: scale-to-fit; -unity-background-image-tint-color: rgb(0, 0, 0); background-position-y: bottom 0; background-position-x: left 0; -unity-slice-left: 0; -unity-font-definition: url(&quot;project://database/Assets/UI%20Documents/OohBahn-Regular.otf?fileID=12800000&amp;guid=2497fd589c6fb47f9a169a7b91eb20f8&amp;type=3#OohBahn-Regular&quot;);">
         <ui:Label text="Label" name="FishName" style="height: 24px; width: 255px; -unity-text-align: upper-center; white-space: pre; text-overflow: clip;" />
         <ui:Label text="Label" name="FishLength" style="height: 24px; width: 257px; -unity-text-align: upper-center;" />
-        <ui:VisualElement name="FishImg" style="flex-grow: 1;" />
+        <ui:VisualElement name="FishImg" style="flex-grow: 1; background-repeat: no-repeat no-repeat;" />
     </ui:VisualElement>
 </ui:UXML>
