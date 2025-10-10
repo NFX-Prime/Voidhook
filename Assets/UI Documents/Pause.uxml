@@ -1,9 +1,7 @@
-<?xml version="1.0" encoding="utf-8"?>
-<ui:UXML
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xmlns:ui="UnityEngine.UIElements"
-    xmlns:uie="UnityEditor.UIElements"
-    xsi:noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd"
->
-    
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <ui:VisualElement name="TopHeading" style="flex-grow: 1; flex-direction: row;">
+        <ui:Label text="PAUSE" style="-unity-font-definition: url(&quot;project://database/Assets/UI%20Documents/OohBahn-Regular.otf?fileID=12800000&amp;guid=2497fd589c6fb47f9a169a7b91eb20f8&amp;type=3#OohBahn-Regular&quot;); font-size: 72px; width: 346px;" />
+        <ui:Button text="CLOSE" style="white-space: pre; align-content: flex-start; align-self: flex-start;" />
+    </ui:VisualElement>
+    <ui:VisualElement name="Bottom" style="flex-grow: 1;" />
 </ui:UXML>
