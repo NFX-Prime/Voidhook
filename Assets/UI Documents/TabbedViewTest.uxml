@@ -5,7 +5,7 @@
             <ui:Label text="Label" name="FishName" style="height: 24px; width: 255px; -unity-text-align: upper-center; white-space: pre; text-overflow: clip;" />
             <ui:Label text="Label" name="FishLength" style="height: 24px; width: 257px; -unity-text-align: upper-center;" />
         </ui:VisualElement>
-        <ui:VisualElement name="FishImg" style="flex-grow: 1; background-repeat: no-repeat no-repeat;" />
+        <ui:VisualElement name="FishImg" style="flex-grow: 1; background-repeat: no-repeat no-repeat; width: 259px;" />
     </ui:VisualElement>
     <ui:VisualElement style="flex-grow: 1;" />
 </ui:UXML>
