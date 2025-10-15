@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.TextCore.LowLevel;
 using UnityEngine.UIElements;
 
@@ -17,6 +18,9 @@ public class Pause : MonoBehaviour
     //Scrim
     private VisualElement _scrim;
 
+    // Pause input actions
+    public InputActionReference pauseAction;
+    public InputActionReference resumeAction;
 
 
     // Start is called before the first frame update
@@ -35,7 +39,17 @@ public class Pause : MonoBehaviour
 
     void Update()
     {
-
+        // If pause triggered
+        if (pauseAction.action.triggered)
+        {
+            // Then pause game
+            pauseGame();
+        }
+        // If pressed Q
+        if (resumeAction.action.triggered)
+        {
+            unPause();
+        }
     }
 
     private void OnCloseButtonClicked(ClickEvent evt)
@@ -49,4 +63,9 @@ public class Pause : MonoBehaviour
         Time.timeScale = 0f;
     }
 
+    private void unPause()
+    {
+        this.gameObject.SetActive(false);
+        Time.timeScale = 1f;
+    }
 }

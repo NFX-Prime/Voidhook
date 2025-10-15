@@ -183,13 +183,6 @@ public class FishingSystem : MonoBehaviour
                 new Vector3(Mouse.current.position.x.ReadValue(), Mouse.current.position.y.ReadValue(), 10f)
         );
 
-        // Convert to world-space direction on XZ plane
-        Vector3 tugDir = (mouseWorld - transform.position).normalized;
-        tugDir.y = 0;
-        tugDir.Normalize();
-
-        // Compare tug with fish direction (opposite)
-        alignment = Vector3.Dot(fishDirection.normalized, tugDir);
 
         // Determining fish pull speed based on pull strength
         currentSpeed = fishPullStrength;
@@ -197,15 +190,6 @@ public class FishingSystem : MonoBehaviour
 
         // Tug for the slowed down of the fish.
         Vector3 appliedTug = Vector3.zero;
-
-        // When pulling mostly opposite fish movement/direction. -1 = perfectly opposite to fish pull, 0 = perpendicular, +1 = same direction
-        if (alignment < -0.3f) 
-        {
-            // Reduce fish movement speed when tugging against it
-            currentSpeed *= 0.3f;
-            // Apply a jerk effect (tug impulse)
-            appliedTug = -tugDir * tugStrength * (-alignment); 
-        }
 
         // Dampening tug impulse
         tugImpulse = Vector3.Lerp(tugImpulse, Vector3.zero, Time.deltaTime * tugDamping);
@@ -248,6 +232,44 @@ public class FishingSystem : MonoBehaviour
 
         // Get distance from player to fish.
         dist = Vector3.Distance(transform.position, fishTarget.position);
+
+        // Combining alignment with position of player and tug direction.
+        Vector3 fishToPlayer = (transform.position - fishTarget.position).normalized;
+        Vector3 fishDir = fishDirection.normalized;
+
+        // Find how fish is moving relative to player
+        float towardFactor = Vector3.Dot(fishDir, fishToPlayer);
+
+        // Convert to world-space direction on XZ plane
+        Vector3 tugDir = (Camera.main.ScreenToWorldPoint(
+                new Vector3(Mouse.current.position.x.ReadValue(),
+                            Mouse.current.position.y.ReadValue(), 10f))
+            - transform.position).normalized;
+        tugDir.y = 0;
+        tugDir.Normalize();
+
+        // Compare how opposite tug direction is to fish direction
+        float tugSameAsFish = Vector3.Dot(fishDir, tugDir);
+        // If opposite, then just inverse it.
+        float tugOppositeFish = -tugSameAsFish;
+
+        // Compare how fish moves relative to player position
+        float positionalFactor = Vector3.Dot(fishDir, fishToPlayer);
+
+        // Combine based on fish movement using below if statement
+        float alignment;
+
+        if (towardFactor > 0f)
+        {
+            // Fish moving toward player → tug same direction helps
+            alignment = tugOppositeFish;
+        }
+        else
+        {
+            // Fish moving away from player → tug opposite direction helps
+            alignment = tugSameAsFish;
+        }
+
 
         // If line is too far away, it breaks (fish gets away)
         if (dist > lineLength) 
@@ -308,6 +330,10 @@ public class FishingSystem : MonoBehaviour
             // Signify that the fish was caught.
             StopFishing(true);
         }
+
+        // DEBUGGING STUFF
+        Debug.DrawLine(fishTarget.position, fishTarget.position + fishDir * 2f, Color.cyan);
+        Debug.DrawLine(fishTarget.position, fishTarget.position + fishToPlayer * 2f, Color.yellow);
     }
 
     /// <summary>
