@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.TextCore.LowLevel;
 using UnityEngine.UIElements;
 
 public class Pause : MonoBehaviour
@@ -17,7 +18,7 @@ public class Pause : MonoBehaviour
     private VisualElement _scrim;
 
 
-    
+
     // Start is called before the first frame update
     void Start()
     {
@@ -32,11 +33,20 @@ public class Pause : MonoBehaviour
         _closeButton.RegisterCallback<ClickEvent>(OnCloseButtonClicked);
     }
 
+    void Update()
+    {
+
+    }
+
     private void OnCloseButtonClicked(ClickEvent evt)
     {
         this.gameObject.SetActive(false);
     }
     
-    
+    private void pauseGame()
+    {
+        this.gameObject.SetActive(true);
+        Time.timeScale = 0f;
+    }
 
 }
