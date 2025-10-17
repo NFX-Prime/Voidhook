@@ -345,4 +345,6 @@ public class FishingSystem : MonoBehaviour
             Debug.Log("❌ The fish escaped...");
         }
     }
+
+
 }

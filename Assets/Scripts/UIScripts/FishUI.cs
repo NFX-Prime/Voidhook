@@ -27,5 +27,6 @@ public class FishUI : MonoBehaviour
         uvRect.x += scrollSpeedX * Time.deltaTime;
         uvRect.y += scrollSpeedY * Time.deltaTime;
         backgroundRawImage.uvRect = uvRect;
-        }
+
+    }
 }
