@@ -2620,6 +2620,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cb934db48b20a45e6b4c99ab29110e3f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  pauseAction: {fileID: 3955730059272859364, guid: 4ef96e97473e2214aa0de71490c07cb7, type: 3}
+  resumeAction: {fileID: 6224330889431752952, guid: 4ef96e97473e2214aa0de71490c07cb7, type: 3}
+  paused: 0
 --- !u!1 &1315323544
 GameObject:
   m_ObjectHideFlags: 0

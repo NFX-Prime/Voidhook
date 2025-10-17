@@ -96,7 +96,7 @@ public class FishingSystem : MonoBehaviour
             }
         }
         
-        if (isFishing)
+        if (isFishing == true)
         {
             // Must be holding the left button to fish
             if (Mouse.current.leftButton.isPressed)
@@ -294,30 +294,6 @@ public class FishingSystem : MonoBehaviour
             catchProgress = Mathf.Max(0f, catchProgress - Time.deltaTime / 4f);
         }
 
-        /*
-        OLD FISHING SYSTEM THAT WAS TOO SIMPLE
-        If player is in the correct medium spot (not too close and not too far to snap) it'll increase progression
-
-        else if (dist < maxTension) 
-        {
-            float mid = (minTension + maxTension) / 2f;
-            float alignment = 1f - Mathf.Abs(dist - mid) / (maxTension - minTension);
-            catchProgress += alignment * reelForce * Time.deltaTime;
-        }
-        */
-        /*
-        // Mouse must be somewhat opposite from the direction of the fish.
-        if (alignment > 0.2f)
-        {
-            catchProgress += alignment * reelForce * Time.deltaTime;
-        }
-        else
-        {
-            // If not tugging correctly, lose progress.
-            catchProgress = Mathf.Max(0, catchProgress - Time.deltaTime); // lose progress if not tugging correctly
-        }
-        */
-
         // Update catch progress bar
         if (catchProgressBar != null)
         {
@@ -325,7 +301,7 @@ public class FishingSystem : MonoBehaviour
         }
 
         // If succesful catch
-        if (catchProgress >= catchThreshold)
+        if (catchProgress > catchThreshold)
         {
             // Signify that the fish was caught.
             StopFishing(true);
