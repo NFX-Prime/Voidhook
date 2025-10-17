@@ -203,7 +203,8 @@ public class Movement : MonoBehaviour
             doubleJump = true;
             groundedPlayer = controller.isGrounded;
 
-            // This if input checks if the direction is different, which allows the player to jump to a different side much easier. Disallow this if we don't want the player to be able to do this.
+            // This if input checks if the direction is different, which allows the player to jump to a different side much easier.
+            // Disallow this if we don't want the player to be able to do this.
             if (inputDir != Vector3.zero)
             {
                 // Calculates new Horizontal velocity to be changed and accomodated to the Update() function.
