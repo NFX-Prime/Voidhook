@@ -22,6 +22,8 @@ public class Pause : MonoBehaviour
     public InputActionReference pauseAction;
     public InputActionReference resumeAction;
 
+    public GameObject pauseScreen;
+
     public bool paused = false;
 
 
@@ -46,11 +48,6 @@ public class Pause : MonoBehaviour
         pauseGame();
     }
 
-    private void OnCloseButtonClicked(ClickEvent evt)
-    {
-        this.gameObject.SetActive(false);
-    }
-    
     private void pauseGame()
     {
         // If pause triggered
@@ -60,13 +57,14 @@ public class Pause : MonoBehaviour
             this.gameObject.SetActive(true);
             Time.timeScale = 0f;
             paused = true;
+            pauseScreen.SetActive(true);
         }
         // If pressed Q
         if (resumeAction.action.triggered && paused == true)
         {
-            
             Time.timeScale = 1f;
             paused = false;
+            pauseScreen.SetActive(false);
         }
     }
 
