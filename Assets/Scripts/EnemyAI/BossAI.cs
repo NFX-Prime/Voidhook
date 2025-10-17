@@ -42,7 +42,7 @@ public class BossAI : MonoBehaviour
         // Always chase the player, but adjust speed based on walking/idle
         distance = Vector3.Distance(player.position, transform.position);
 
-        if (distance < 15.0f)
+        if (distance < 10.0f)
         {
             agent.SetDestination(player.position);
         }
