@@ -27,6 +27,7 @@ public class BossAI : MonoBehaviour
 
     private NavMeshAgent agent;
 
+
     void Start()
     {
         // Getting agent component
@@ -41,6 +42,9 @@ public class BossAI : MonoBehaviour
 
         // Always chase the player, but adjust speed based on walking/idle
         distance = Vector3.Distance(player.position, transform.position);
+
+
+
 
         if (distance < 10.0f)
         {
