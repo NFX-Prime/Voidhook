@@ -5,9 +5,9 @@ public class CameraObstructionHandler : MonoBehaviour
 {
     // Get player and the layers to block
     [Header("References")]
-    public Transform player;          
+    public Transform player;
     // SET EACH OBJECT TO THE OBSTRUCTION LAYER TO PASS THROUGH! ITS IN ALL CAPS LIKE THIS!
-    public LayerMask obstructionMask; 
+    public LayerMask obstructionMask;
 
     [Header("Fade Settings")]
     [Range(0f, 1f)] public float fadedAlpha = 0.3f;
@@ -16,7 +16,7 @@ public class CameraObstructionHandler : MonoBehaviour
     // List of objects that will be passed through.
     private List<Renderer> currentObstructions = new List<Renderer>();
 
-    // Using a Coroutine systemd that allows it to fade over a brief period. Like an animation of sorts.
+    // Using a Coroutine system that allows it to fade over a brief period. Like an animation of sorts.
     private Dictionary<Renderer, Coroutine> fadeCoroutines = new Dictionary<Renderer, Coroutine>();
 
     void Update()
@@ -27,8 +27,9 @@ public class CameraObstructionHandler : MonoBehaviour
         Vector3 direction = player.position - transform.position;
         float distance = Vector3.Distance(transform.position, player.position);
 
+        // Using SphereCastAll instead of RaycastAll (more reliable in builds) hopefully it'll work
         Ray ray = new Ray(transform.position, direction);
-        RaycastHit[] hits = Physics.RaycastAll(ray, distance, obstructionMask);
+        RaycastHit[] hits = Physics.SphereCastAll(ray, 0.1f, distance, obstructionMask);
 
         // Collect renderers hit by the ray
         List<Renderer> newObstructions = new List<Renderer>();
@@ -77,20 +78,34 @@ public class CameraObstructionHandler : MonoBehaviour
 
     private System.Collections.IEnumerator FadeMaterial(Renderer rend, float targetAlpha)
     {
-        Material mat = rend.material;
+        // Clone material to ensure safe modification at runtime (important for builds)
+        Material mat = rend.material = new Material(rend.material);
+
         Color color = mat.color;
         float startAlpha = color.a;
 
-        // Enable transparency mode
-        mat.SetFloat("_Mode", 2);
-        mat.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.SrcAlpha);
-        mat.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
-        mat.SetInt("_ZWrite", 0);
-        mat.DisableKeyword("_ALPHATEST_ON");
-        mat.EnableKeyword("_ALPHABLEND_ON");
-        mat.DisableKeyword("_ALPHAPREMULTIPLY_ON");
-        mat.renderQueue = 3000;
+        // Enable transparency mode AND added compatibility for both Built-in and URP render pipelines
+        if (mat.HasProperty("_Surface"))
+        {
+            // URP-compatible transparency mode
+            mat.SetFloat("_Surface", 1); // 1 = Transparent
+            mat.renderQueue = 3000;
+        }
+        else
+        {
+            // Built-in pipeline transparency setup
+            mat.SetFloat("_Mode", 2);
+            mat.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.SrcAlpha);
+            mat.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
+            mat.SetInt("_ZWrite", 0);
+            mat.DisableKeyword("_ALPHATEST_ON");
+            mat.EnableKeyword("_ALPHABLEND_ON");
+            mat.DisableKeyword("_ALPHAPREMULTIPLY_ON");
+            mat.EnableKeyword("_SURFACE_TYPE_TRANSPARENT"); // Added to ensure build safety
+            mat.renderQueue = 3000;
+        }
 
+        // Fade loop (smooth transition)
         while (Mathf.Abs(color.a - targetAlpha) > 0.01f)
         {
             color.a = Mathf.Lerp(color.a, targetAlpha, Time.deltaTime * fadeSpeed);
@@ -104,11 +119,18 @@ public class CameraObstructionHandler : MonoBehaviour
         // If fully opaque, reset to normal rendering mode
         if (Mathf.Approximately(targetAlpha, 1f))
         {
-            mat.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.One);
-            mat.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.Zero);
-            mat.SetInt("_ZWrite", 1);
-            mat.DisableKeyword("_ALPHABLEND_ON");
-            mat.renderQueue = -1;
+            if (mat.HasProperty("_Surface"))
+            {
+                mat.SetFloat("_Surface", 0); // URP - opaque
+            }
+            else
+            {
+                mat.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.One);
+                mat.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.Zero);
+                mat.SetInt("_ZWrite", 1);
+                mat.DisableKeyword("_ALPHABLEND_ON");
+                mat.renderQueue = -1;
+            }
         }
 
         fadeCoroutines.Remove(rend);
