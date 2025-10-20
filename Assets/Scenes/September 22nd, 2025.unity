@@ -5593,7 +5593,7 @@ MonoBehaviour:
   obstructionMask:
     serializedVersion: 2
     m_Bits: 8
-  fadedAlpha: 0.3
+  fadedAlpha: 0.081
   fadeSpeed: 5
 --- !u!1001 &959614415
 PrefabInstance:
@@ -6415,7 +6415,7 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
@@ -12088,6 +12088,7 @@ MonoBehaviour:
   stopDistance: 1.5
   distance: 0
   numtargets: 0
+  foundPlayer: 0
 --- !u!54 &1920542555
 Rigidbody:
   m_ObjectHideFlags: 0
