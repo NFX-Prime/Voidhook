@@ -8173,6 +8173,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 2043072855}
   - {fileID: 921301979}
   - {fileID: 1964702232}
   - {fileID: 313469996}
@@ -12420,6 +12421,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 474d480d3c9eefd4cbe227a2955240fc, type: 3}
+--- !u!4 &2043072855 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4938533711494068921, guid: fb7931f5f9adbfe48a9916093a0bb44c, type: 3}
+  m_PrefabInstance: {fileID: 7704235447295637638}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &2048628785
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -13736,19 +13742,19 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 0}
+    m_TransformParent: {fileID: 1339837824}
     m_Modifications:
     - target: {fileID: 4938533711494068921, guid: fb7931f5f9adbfe48a9916093a0bb44c, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 147.3
+      value: 9.589996
       objectReference: {fileID: 0}
     - target: {fileID: 4938533711494068921, guid: fb7931f5f9adbfe48a9916093a0bb44c, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.77
+      value: 0.1220839
       objectReference: {fileID: 0}
     - target: {fileID: 4938533711494068921, guid: fb7931f5f9adbfe48a9916093a0bb44c, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 4.84
+      value: 1.5699997
       objectReference: {fileID: 0}
     - target: {fileID: 4938533711494068921, guid: fb7931f5f9adbfe48a9916093a0bb44c, type: 3}
       propertyPath: m_LocalRotation.w
@@ -13756,7 +13762,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4938533711494068921, guid: fb7931f5f9adbfe48a9916093a0bb44c, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 4938533711494068921, guid: fb7931f5f9adbfe48a9916093a0bb44c, type: 3}
       propertyPath: m_LocalRotation.y
@@ -13952,7 +13958,6 @@ SceneRoots:
   - {fileID: 968076743}
   - {fileID: 744230280}
   - {fileID: 942918530}
-  - {fileID: 7704235447295637638}
   - {fileID: 1052459106}
   - {fileID: 1598230553}
   - {fileID: 965090529}
