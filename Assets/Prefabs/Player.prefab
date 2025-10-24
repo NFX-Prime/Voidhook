@@ -15,7 +15,6 @@ GameObject:
   - component: {fileID: 6749708648321500891}
   - component: {fileID: -1452825999320244412}
   - component: {fileID: 2014202000459658752}
-  - component: {fileID: -2884077453672404340}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -133,6 +132,7 @@ MonoBehaviour:
   airDeceleration: 2
   runSpeed: 5
   walkSpeed: 2
+  currentSpeed: 0
   isWalking: 0
   coyoteTime: 0.2
   coyoteTimeCounter: 0
@@ -258,32 +258,3 @@ LineRenderer:
   m_UseWorldSpace: 1
   m_Loop: 0
   m_ApplyActiveColorSpace: 1
---- !u!114 &-2884077453672404340
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2703864832527900051}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dacca54d1171d7d4ebf9856d593a7440, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  pondCenter: {fileID: 6541445390635215474, guid: b2d131efbe0aa1d40a36a42f02f6e920, type: 3}
-  castRange: 10
-  isFishing: 0
-  catchProgress: 0
-  lineLength: 15
-  minTension: 2
-  maxTension: 15
-  reelForce: 2
-  fishPullStrength: 3
-  fishChangeDirTime: 2
-  tugStrength: 3
-  tugDamping: 5
-  pondCollider: {fileID: 1587342039714643721, guid: b2d131efbe0aa1d40a36a42f02f6e920, type: 3}
-  fishPrefab: {fileID: 411070408041363775, guid: 09194cb956a90a44b92ce42e33d20653, type: 3}
-  catchProgressBar: {fileID: 7656283756195900700, guid: 6a97f90d42838aa459829fdd24e88afb, type: 3}
-  alignment: 0
-  currentSpeed: 0
