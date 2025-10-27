@@ -321,6 +321,7 @@ GameObject:
   - component: {fileID: 27929630}
   - component: {fileID: 27929633}
   - component: {fileID: 27929632}
+  - component: {fileID: 27929634}
   m_Layer: 5
   m_Name: ReelWheel
   m_TagString: Untagged
@@ -385,6 +386,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 27929629}
   m_CullTransparentMesh: 1
+--- !u!114 &27929634
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 27929629}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c16850e9bd7767b489362fc24c2f7bc6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  wheelImage: {fileID: 27929632}
+  fillSpeed: 0.4
+  drainSpeed: 0.2
 --- !u!1 &41117560
 GameObject:
   m_ObjectHideFlags: 0
@@ -1412,7 +1428,7 @@ MonoBehaviour:
   castHeight: 0.5
   biteWaitMin: 1.5
   biteWaitMax: 4
-  miniGameUI: {fileID: 1314916258}
+  miniGameUI: {fileID: 1474436953}
 --- !u!120 &209561534
 LineRenderer:
   serializedVersion: 2
@@ -8035,7 +8051,7 @@ MonoBehaviour:
   castHeight: 0.5
   biteWaitMin: 1.5
   biteWaitMax: 4
-  miniGameUI: {fileID: 1314916258}
+  miniGameUI: {fileID: 1474436953}
 --- !u!1 &1120985469
 GameObject:
   m_ObjectHideFlags: 0
@@ -9335,8 +9351,6 @@ GameObject:
   - component: {fileID: 1314916256}
   - component: {fileID: 1314916255}
   - component: {fileID: 1314916257}
-  - component: {fileID: 1314916259}
-  - component: {fileID: 1314916258}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -9392,36 +9406,6 @@ MonoBehaviour:
   resumeAction: {fileID: 6224330889431752952, guid: 4ef96e97473e2214aa0de71490c07cb7, type: 3}
   pauseScreen: {fileID: 843162348}
   paused: 0
---- !u!114 &1314916258
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1314916254}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: da1f45c916d9c1c4ab29e3c6351a7344, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  panel: {fileID: 1474436948}
-  sequenceText: {fileID: 166238167}
-  sequenceLength: 4
---- !u!114 &1314916259
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1314916254}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c16850e9bd7767b489362fc24c2f7bc6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  wheelImage: {fileID: 27929632}
-  fillSpeed: 0.4
-  drainSpeed: 0.2
 --- !u!1 &1315323544
 GameObject:
   m_ObjectHideFlags: 0
@@ -10620,6 +10604,7 @@ GameObject:
   - component: {fileID: 1474436949}
   - component: {fileID: 1474436952}
   - component: {fileID: 1474436951}
+  - component: {fileID: 1474436953}
   m_Layer: 5
   m_Name: ArrowMiniGamePanel
   m_TagString: Untagged
@@ -10685,6 +10670,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1474436948}
   m_CullTransparentMesh: 1
+--- !u!114 &1474436953
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1474436948}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: da1f45c916d9c1c4ab29e3c6351a7344, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  panel: {fileID: 1474436948}
+  sequenceText: {fileID: 166238167}
+  sequenceLength: 4
 --- !u!1001 &1476024721
 PrefabInstance:
   m_ObjectHideFlags: 0
