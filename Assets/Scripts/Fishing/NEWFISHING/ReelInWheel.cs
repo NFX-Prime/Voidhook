@@ -3,7 +3,7 @@ using UnityEngine.UI;
 using UnityEngine.InputSystem;
 
 
-
+// THIS SCRIPT IS IN THE WHEEL UI OBJECT ITSELF RIGHT NOW- TRYING TO MAKE IT NOT SO
 
 public class ReelInWheel : MonoBehaviour
 {
