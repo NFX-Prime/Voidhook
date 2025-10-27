@@ -10,7 +10,8 @@ public class FishingMiniGame : MonoBehaviour
 {
     [Header("UI")]
     // UI panel background. Input the panel in the inspector! This panel simply holds the textmesh
-    public GameObject panel;                  
+    public GameObject panel;
+
     // The text field showing the sequence of keys to press. 
     public TextMeshProUGUI sequenceText;      
 
@@ -19,10 +20,12 @@ public class FishingMiniGame : MonoBehaviour
     // Number of keys to press in sequence. We can change this for each "special" pond"
     public int sequenceLength = 4;            
     
-    // Making keys list to hold which keys will be used for the fishing game. Change if want to use different keys.
-    Key[] keys = { Key.UpArrow, Key.LeftArrow, Key.DownArrow, Key.RightArrow };
+
     // List to hold sequence of keys that will be updated to be clicked on
     private List<Key> sequence = new List<Key>();
+
+    // Making keys list to hold which keys will be used for the fishing game. Change if want to use different keys.
+    Key[] keys = { Key.UpArrow, Key.LeftArrow, Key.DownArrow, Key.RightArrow };
 
     private int index = 0;
 
@@ -48,13 +51,13 @@ public class FishingMiniGame : MonoBehaviour
         index = 0;
         sequence.Clear();
 
-        // Generate new sequence (W A S D). Change to arrows if you prefer.
+        // Generate new sequence (Arrow keys for now)
         for (int i = 0; i < sequenceLength; i++)
             sequence.Add(keys[Random.Range(0, keys.Length)]);
 
         UpdateUI();
 
-        // show panel last so Update() sees a populated sequence immediately
+        // Show the panel 
         panel.SetActive(true);
     }
 
@@ -80,7 +83,7 @@ public class FishingMiniGame : MonoBehaviour
         // Early outs:
         // 1. If panel isn't active do nothing
         // 2. If sequence is empty do nothing (safety)
-        if (!panel || !panel.activeSelf) return;
+        //if (!panel || !panel.activeSelf) return;
         if (sequence == null || sequence.Count == 0) return;
         if (index < 0 || index >= sequence.Count) return;
 

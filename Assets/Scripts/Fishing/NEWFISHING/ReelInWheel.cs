@@ -25,7 +25,7 @@ public class ReelInWheel : MonoBehaviour
     {
         // UI hidden when not reeling
         Instance = this;
-        gameObject.SetActive(false); 
+        //gameObject.SetActive(false); 
     }
 
     /// <summary>
