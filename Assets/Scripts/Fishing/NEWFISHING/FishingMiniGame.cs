@@ -37,6 +37,13 @@ public class FishingMiniGame : MonoBehaviour
 
     // The third function in pondfishing, OnFishCaught will be used in the reelinwheel script.
 
+    public void Awake()
+    {
+        // Set panel to false
+        panel.SetActive(false);
+    }
+
+
     /// <summary>
     /// This starts the fishing button sequence.
     /// </summary>
