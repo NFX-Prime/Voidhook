@@ -102,6 +102,7 @@ public class PondFishing : MonoBehaviour
             }
         }
 
+        // Resets bobber to go back to start position.
         bobber.transform.position = startPos;
     }
 }
