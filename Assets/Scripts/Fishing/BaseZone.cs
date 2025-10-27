@@ -4,7 +4,6 @@ public class BaseZone : MonoBehaviour
 {
     // Total Fish stored
     public int totalFishStored = 0;
-    int deposited = 0;
 
     // Set up playerFishing script
     public FishingSystem playerFishing;
