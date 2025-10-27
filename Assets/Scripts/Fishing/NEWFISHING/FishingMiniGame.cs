@@ -73,6 +73,8 @@ public class FishingMiniGame : MonoBehaviour
             // Highlight current key
             if (i == index)
                 sequenceText.text += $"<color=yellow>{sequence[i]}</color> ";
+
+            // TODO: Add a switch case for replacing the keys with custom images in the panel to make it look nicer
             else
                 sequenceText.text += sequence[i] + " ";
         }
