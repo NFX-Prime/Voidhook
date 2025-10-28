@@ -9,6 +9,9 @@ public class ReelInWheel : MonoBehaviour
 {
     public static ReelInWheel Instance;
 
+    // Put the interact key action here in the inspector
+    public InputActionReference wheelAction;
+
     // Assign the UI Image here
     public Image wheelImage; 
 
@@ -46,7 +49,7 @@ public class ReelInWheel : MonoBehaviour
         if (!active) return;
 
         // Player is reeling (Holding Left Mouse Button)
-        bool isReeling = Mouse.current.leftButton.isPressed;
+        bool isReeling = wheelAction.action.IsPressed();
 
         if (isReeling)
         {
