@@ -3,6 +3,7 @@ using TMPro;
 using System.Collections.Generic;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Controls;
+using UnityEngine.UI;
 
 // NOTE: A PANEL THAT HOLDS THE TEXTMESH FOR THE SEQUENCE WILL BE ASSIGNED THIS SCRIPT!
 
@@ -12,8 +13,24 @@ public class FishingMiniGame : MonoBehaviour
     // UI panel background. Input the panel in the inspector! This panel simply holds the textmesh
     public GameObject panel;
 
-    // The text field showing the sequence of keys to press. 
-    public TextMeshProUGUI sequenceText;      
+    [Header("Arrow Images")]
+    [Tooltip("Container for the sequence of arrow images")]
+    public RectTransform arrowContainer;
+
+    [Tooltip("Image prefab for each arrow in the sequence")]
+    public Image arrowPrefab;
+
+    [Tooltip("Sprites for each direction")]
+    public Sprite upArrowSprite;
+    public Sprite downArrowSprite;
+    public Sprite leftArrowSprite;
+    public Sprite rightArrowSprite;
+
+    [Tooltip("Color tint for the current/active arrow")]
+    public Color highlightColor = Color.yellow;
+    
+    // List to hold the arrow Image components we create
+    private List<Image> arrowImages = new List<Image>();
 
     [Header("Settings")]
     [Min(1)]
@@ -57,6 +74,7 @@ public class FishingMiniGame : MonoBehaviour
 
         index = 0;
         sequence.Clear();
+        ClearArrows();
 
         // Generate new sequence (Arrow keys for now)
         for (int i = 0; i < sequenceLength; i++)
@@ -71,19 +89,54 @@ public class FishingMiniGame : MonoBehaviour
     /// <summary>
     /// Function to update UI with a new sequence.
     /// </summary>
+    void ClearArrows()
+    {
+        // Destroy any existing arrow images
+        foreach (var arrow in arrowImages)
+        {
+            if (arrow != null)
+                Destroy(arrow.gameObject);
+        }
+        arrowImages.Clear();
+    }
+
+    Sprite GetSpriteForKey(Key key)
+    {
+        switch (key)
+        {
+            case Key.UpArrow: return upArrowSprite;
+            case Key.DownArrow: return downArrowSprite;
+            case Key.LeftArrow: return leftArrowSprite;
+            case Key.RightArrow: return rightArrowSprite;
+            default: return null;
+        }
+    }
+
     void UpdateUI()
     {
-        sequenceText.text = "";
+        // Create arrow images if needed
+        if (arrowImages.Count != sequence.Count)
+        {
+            ClearArrows();
+            
+            // Create new arrows
+            for (int i = 0; i < sequence.Count; i++)
+            {
+                var newArrow = Instantiate(arrowPrefab, arrowContainer);
+                arrowImages.Add(newArrow);
+            }
+        }
 
+        // Update sprites and colors
         for (int i = 0; i < sequence.Count; i++)
         {
-            // Highlight current key
-            if (i == index)
-                sequenceText.text += $"<color=yellow>{sequence[i]}</color> ";
+            var arrow = arrowImages[i];
+            arrow.sprite = GetSpriteForKey(sequence[i]);
 
-            // TODO: Add a switch case for replacing the keys with custom images in the panel to make it look nicer
+            if (i == index)
+                arrow.color = highlightColor;
             else
-                sequenceText.text += sequence[i] + " ";
+                arrow.color = Color.white;
         }
     }
 
@@ -117,6 +170,7 @@ public class FishingMiniGame : MonoBehaviour
             if (index >= sequence.Count)
             {
                 panel.SetActive(false);
+                ClearArrows();
                 onSuccess?.Invoke();
             }
             else
