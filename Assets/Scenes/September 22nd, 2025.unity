@@ -517,7 +517,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c16850e9bd7767b489362fc24c2f7bc6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  wheelAction: {fileID: 0}
+  wheelAction: {fileID: 9171582725643219240, guid: 4ef96e97473e2214aa0de71490c07cb7, type: 3}
   wheelImage: {fileID: 27929632}
   fillSpeed: 0.4
   drainSpeed: 0.2
@@ -4581,7 +4581,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &401445331
 Transform:
   m_ObjectHideFlags: 0
@@ -42679,15 +42679,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 2dd9b42d1c4226b44b3e40719c6c466a, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 147.9
+      value: 191.3
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 2dd9b42d1c4226b44b3e40719c6c466a, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 14.6
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 2dd9b42d1c4226b44b3e40719c6c466a, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 33.7
+      value: 171.4
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 2dd9b42d1c4226b44b3e40719c6c466a, type: 3}
       propertyPath: m_LocalRotation.w
