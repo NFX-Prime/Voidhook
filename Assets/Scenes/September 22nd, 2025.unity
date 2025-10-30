@@ -53284,7 +53284,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 4148955215904055120, guid: 6a97f90d42838aa459829fdd24e88afb, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5796493109015208229, guid: 6a97f90d42838aa459829fdd24e88afb, type: 3}
       propertyPath: m_Pivot.x
@@ -53369,6 +53369,10 @@ PrefabInstance:
     - target: {fileID: 9062023147853281996, guid: 6a97f90d42838aa459829fdd24e88afb, type: 3}
       propertyPath: m_Name
       value: Slider
+      objectReference: {fileID: 0}
+    - target: {fileID: 9062023147853281996, guid: 6a97f90d42838aa459829fdd24e88afb, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
