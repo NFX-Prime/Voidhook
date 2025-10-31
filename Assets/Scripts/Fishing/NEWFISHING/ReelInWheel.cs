@@ -42,6 +42,15 @@ public class ReelInWheel : MonoBehaviour
         wheelImage.fillAmount = 0f;
         active = true;
         gameObject.SetActive(true);
+
+        // Disable player casting while in minigame
+        if (PlayerFishingController.Instance != null)
+        {
+            PlayerFishingController.Instance.SetCanCast(false);
+
+            // Subscribe to line break
+            PlayerFishingController.Instance.onLineBreak += CancelReeling;
+        }
     }
 
     void Update()
@@ -68,6 +77,34 @@ public class ReelInWheel : MonoBehaviour
             active = false;
             gameObject.SetActive(false);
             onComplete?.Invoke();
+
+            // Re-enable player casting after minigame
+            if (PlayerFishingController.Instance != null)
+            {
+                PlayerFishingController.Instance.SetCanCast(true);
+
+                // Unsubscribe from line break
+                PlayerFishingController.Instance.onLineBreak -= CancelReeling;
+            }
         }
     }
+
+    /// <summary>
+    /// Cancel the reeling early 
+    /// </summary>
+    public void CancelReeling()
+    {
+        if (!active) return;
+
+        active = false;
+        gameObject.SetActive(false);
+
+        // Optionally invoke fail callback if you want
+        onComplete = null;
+
+        // Re-enable player casting
+        if (PlayerFishingController.Instance != null)
+            PlayerFishingController.Instance.SetCanCast(true);
+    }
+
 }

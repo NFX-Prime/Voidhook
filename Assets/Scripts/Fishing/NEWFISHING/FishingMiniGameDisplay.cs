@@ -69,6 +69,10 @@ public class FishingMiniGame : MonoBehaviour
         onSuccess = success;
         onFail = fail;
 
+        // Disable player casting while mini-game is active
+        if (PlayerFishingController.Instance != null)
+            PlayerFishingController.Instance.SetCanCast(false);
+
         // Reset sequence length
         if (sequenceLength < 1) sequenceLength = 1;
 
@@ -187,5 +191,21 @@ public class FishingMiniGame : MonoBehaviour
             onFail?.Invoke();
         }
         */
+    }
+
+    /// <summary>
+    /// Function that ends the minigame if the player walks too far away from bobber (by invoking the fail event in CastinRodController.cs
+    /// </summary>
+    public void CancelMiniGame()
+    {
+        panel.SetActive(false);
+        ClearArrows();
+
+        // Call fail callback if it exists
+        onFail?.Invoke();
+
+        // Re-enable player casting
+        if (PlayerFishingController.Instance != null)
+            PlayerFishingController.Instance.SetCanCast(true);
     }
 }
