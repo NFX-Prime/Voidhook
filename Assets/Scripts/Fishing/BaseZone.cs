@@ -5,44 +5,45 @@ public class BaseZone : MonoBehaviour
     // Total Fish stored
     public int totalFishStored = 0;
 
+    // How many fish must be dropped off before unlocking dialogue
     public int fishThresholdForDialogue = 3;
 
-
-    // Set up playerFishing script
     public FishingSystem playerFishing;
     public GameManager gameManager;
-    // Assign next dialogue trigger
+
+    // The dialogue trigger to unlock
     public GameObject nextDialogueTrigger;
-
-    private void Awake()
-    {
-
-    }
-
 
     private void OnTriggerEnter(Collider other)
     {
-        // Only allow player to deposit
         if (other.CompareTag("Player"))
         {
-            // Deposit fish via GameManager
-            if (gameManager.fishCount > 0)
+            int fishToDeposit = gameManager.fishCount;
+
+            if (fishToDeposit > 0)
             {
+                // Add to total BEFORE resetting count
+                totalFishStored += fishToDeposit;
+
+                Debug.Log($"Deposited {fishToDeposit} fish! Total stored: {totalFishStored}");
+
+                // Now call deposit (which resets count)
                 gameManager.DepositFish();
-                totalFishStored += gameManager.fishCount;
 
-                Debug.Log("Deposited fish! Total stored: " + totalFishStored);
-
-                // Check if enough fish are deposited to enable next dialogue
+                // Unlock dialogue if threshold met
                 if (totalFishStored >= fishThresholdForDialogue && nextDialogueTrigger != null)
                 {
-                    // Enable the collider so the player can trigger the next dialogue
                     Collider col = nextDialogueTrigger.GetComponent<Collider>();
-                    if (col != null)
+                    if (col != null && !col.enabled)
+                    {
                         col.enabled = true;
-
-                    Debug.Log("Next dialogue unlocked!");
+                        Debug.Log("Next dialogue unlocked!");
+                    }
                 }
+            }
+            else
+            {
+                Debug.Log("No fish to deposit!");
             }
         }
     }
