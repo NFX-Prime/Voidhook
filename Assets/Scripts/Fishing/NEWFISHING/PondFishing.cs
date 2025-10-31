@@ -50,6 +50,15 @@ public class PondFishing : MonoBehaviour
             yield break;
         }
 
+        // Subscribe to line break to cancel mini-game
+        if (PlayerFishingController.Instance != null)
+        {
+            PlayerFishingController.Instance.onLineBreak += () =>
+            {
+                miniGameUI.CancelMiniGame(); // We'll add this function
+            };
+        }
+
         Debug.Log("Triggering MiniGame now!");
         miniGameUI.StartMiniGame(
             () => bobber.OnFishHooked(),

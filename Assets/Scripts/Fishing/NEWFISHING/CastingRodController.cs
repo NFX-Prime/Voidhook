@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -31,9 +32,17 @@ public class PlayerFishingController : MonoBehaviour
     // Fishing line
     private LineRenderer lineRenderer;
 
+    [Header("Line Settings")]
+    // Max distance to before line breaks 
+    public float maxLineDistance = 15f;
+
     private bool isCharging = false;
     private float castCharge = 0f;
     private GameObject currentBobber;
+
+    // This event is called when the line breaks
+    public System.Action onLineBreak;
+
 
     // Whether player can cast (disabled while in minigame)
     private bool canCast = true;
@@ -87,9 +96,25 @@ public class PlayerFishingController : MonoBehaviour
         // Update the fishing line if bobber exists
         if (currentBobber != null)
         {
-            lineRenderer.enabled = true;
-            lineRenderer.SetPosition(0, transform.position + Vector3.up * castHeight); // Player position (adjust height)
-            lineRenderer.SetPosition(1, currentBobber.transform.position); // Bobber position
+
+            // Getting distance from bobber to player position
+            float distance = Vector3.Distance(transform.position, currentBobber.transform.position);
+
+            // Break the line if too far
+            if (distance > maxLineDistance)
+            {
+                Destroy(currentBobber);
+                currentBobber = null;
+                lineRenderer.enabled = false;
+                // Notify listeners that the line broke (in FishingMiniGame and ReelInWheel)
+                onLineBreak?.Invoke();
+            }
+            else
+            {
+                lineRenderer.enabled = true;
+                lineRenderer.SetPosition(0, transform.position + Vector3.up * castHeight); // Player position (adjust height)
+                lineRenderer.SetPosition(1, currentBobber.transform.position); // Bobber position
+            }
         }
         else
         {
