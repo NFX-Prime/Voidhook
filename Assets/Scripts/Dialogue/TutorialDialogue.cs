@@ -8,7 +8,9 @@ public class TutorialDialogue : MonoBehaviour
     // Panel containing the text
     public GameObject dialoguePanel; 
     // The actual UI text element
-    public Text dialogueText;        
+    public Text dialogueText;
+    // Small icon or text that says "Press E"
+    public GameObject pressEIcon;    
 
     [Header("Dialogue Content")]
     [TextArea]
@@ -61,11 +63,19 @@ public class TutorialDialogue : MonoBehaviour
 
         dialoguePanel.SetActive(true);
         dialogueText.text = messages[currentIndex];
+
+
+        if (pressEIcon != null)
+            pressEIcon.SetActive(true);
+
     }
 
     private void EndDialogue()
     {
         active = false;
         dialoguePanel.SetActive(false);
+
+        if (pressEIcon != null)
+            pressEIcon.SetActive(false);
     }
 }
