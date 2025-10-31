@@ -26,6 +26,9 @@ public class PlayerFishingController : MonoBehaviour
     // Container to hold all preview arrows so they don't affect the player
     private GameObject castPreviewContainer;
 
+    // Fishing line
+    private LineRenderer lineRenderer;
+
     private bool isCharging = false;
     private float castCharge = 0f;
     private GameObject currentBobber;
@@ -33,7 +36,21 @@ public class PlayerFishingController : MonoBehaviour
     // Fixed world-space origin for arrows
     private Vector3 castOrigin;        
     // Fixed direction when charging
-    private Vector3 castDirection;     
+    private Vector3 castDirection;
+
+    void Awake()
+    {
+        // Setup the LineRenderer
+        lineRenderer = gameObject.AddComponent<LineRenderer>();
+        lineRenderer.positionCount = 2;
+        // Simple unlit material
+        lineRenderer.material = new Material(Shader.Find("Sprites/Default"));
+        lineRenderer.widthMultiplier = 0.05f;
+        // Only show when bobber exists
+        lineRenderer.enabled = false; 
+        lineRenderer.numCapVertices = 2;
+        
+    }
 
     void OnEnable()
     {
@@ -64,6 +81,19 @@ public class PlayerFishingController : MonoBehaviour
             // Delete the casting preview
             ClearCastPreview();
         }
+
+        // Update the fishing line if bobber exists
+        if (currentBobber != null)
+        {
+            lineRenderer.enabled = true;
+            lineRenderer.SetPosition(0, transform.position + Vector3.up * castHeight); // Player position (adjust height)
+            lineRenderer.SetPosition(1, currentBobber.transform.position); // Bobber position
+        }
+        else
+        {
+            lineRenderer.enabled = false;
+        }
+
     }
 
     /// <summary>
