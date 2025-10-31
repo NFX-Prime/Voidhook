@@ -2639,6 +2639,7 @@ MonoBehaviour:
   castArrowPrefab: {fileID: 3185626715932221030, guid: 7f09a28c608ae8842a94ae326cac1734, type: 3}
   arcSegments: 10
   arcHeight: 2
+  maxLineDistance: 15
 --- !u!4 &188418817 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4938533711494068921, guid: fb7931f5f9adbfe48a9916093a0bb44c, type: 3}
@@ -41909,7 +41910,7 @@ PrefabInstance:
       objectReference: {fileID: 1322588676}
     - target: {fileID: 413907558309854668, guid: 9954a664efb33314ab118d7c15a32dae, type: 3}
       propertyPath: m_VersionIndex
-      value: 16
+      value: 19
       objectReference: {fileID: 0}
     - target: {fileID: 413907558309854668, guid: 9954a664efb33314ab118d7c15a32dae, type: 3}
       propertyPath: m_Tangents.Array.data[366].x
@@ -42249,7 +42250,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1332684014940353063, guid: 9954a664efb33314ab118d7c15a32dae, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 323.9
+      value: 160.4
       objectReference: {fileID: 0}
     - target: {fileID: 1332684014940353063, guid: 9954a664efb33314ab118d7c15a32dae, type: 3}
       propertyPath: m_LocalPosition.y
@@ -51236,7 +51237,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: c36750e22fa044e41915ad7e62d4dcea, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 122.56578
+      value: 318.9
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c36750e22fa044e41915ad7e62d4dcea, type: 3}
       propertyPath: m_LocalPosition.y
