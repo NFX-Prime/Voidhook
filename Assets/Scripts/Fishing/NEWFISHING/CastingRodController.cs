@@ -5,6 +5,8 @@ using UnityEngine.InputSystem;
 
 public class PlayerFishingController : MonoBehaviour
 {
+    public static PlayerFishingController Instance; // Singleton for easy access
+
     public GameObject bobberPrefab;
     public float castHeight = 0.5f;
     public float minCastDistance = 0f;
@@ -33,13 +35,14 @@ public class PlayerFishingController : MonoBehaviour
     private float castCharge = 0f;
     private GameObject currentBobber;
 
-    // Fixed world-space origin for arrows
-    private Vector3 castOrigin;        
-    // Fixed direction when charging
-    private Vector3 castDirection;
+    // Whether player can cast (disabled while in minigame)
+    private bool canCast = true;
 
     void Awake()
     {
+        // Setup singleton
+        Instance = this;
+
         // Setup the LineRenderer
         lineRenderer = gameObject.AddComponent<LineRenderer>();
         lineRenderer.positionCount = 2;
@@ -47,9 +50,8 @@ public class PlayerFishingController : MonoBehaviour
         lineRenderer.material = new Material(Shader.Find("Sprites/Default"));
         lineRenderer.widthMultiplier = 0.05f;
         // Only show when bobber exists
-        lineRenderer.enabled = false; 
+        lineRenderer.enabled = false;
         lineRenderer.numCapVertices = 2;
-        
     }
 
     void OnEnable()
@@ -93,7 +95,6 @@ public class PlayerFishingController : MonoBehaviour
         {
             lineRenderer.enabled = false;
         }
-
     }
 
     /// <summary>
@@ -102,6 +103,9 @@ public class PlayerFishingController : MonoBehaviour
     /// <param name="context"></param>
     void OnCastStarted(InputAction.CallbackContext context)
     {
+        // Prevent casting while in reeling minigame
+        if (!canCast) return;
+
         isCharging = true;
         castCharge = 0f;
 
@@ -113,10 +117,6 @@ public class PlayerFishingController : MonoBehaviour
             castPreviewContainer.transform.parent = null;
             castPreviewContainer.transform.position = Vector3.zero;
         }
-
-        // Fix the origin and direction at the moment charging starts
-        castOrigin = transform.position + Vector3.up * castHeight;
-        castDirection = transform.forward.normalized;
     }
 
     /// <summary>
@@ -125,7 +125,9 @@ public class PlayerFishingController : MonoBehaviour
     /// <param name="context"></param>
     void OnCastReleased(InputAction.CallbackContext context)
     {
-        if (!isCharging) return;
+        // Prevent casting while in reeling minigame
+        if (!isCharging || !canCast) return;
+
         isCharging = false;
 
         float castDistance = Mathf.Lerp(minCastDistance, maxCastDistance, castCharge);
@@ -152,11 +154,11 @@ public class PlayerFishingController : MonoBehaviour
     {
         float castDistance = Mathf.Lerp(minCastDistance, maxCastDistance, castCharge);
 
-        // Use the fixed origin and direction from start of charge
-        Vector3 origin = castOrigin;
-        Vector3 dir = castDirection;
+        // Update origin and direction every frame based on player position and rotation
+        Vector3 origin = transform.position + Vector3.up * castHeight;
+        Vector3 dir = transform.forward.normalized;
 
-        // Instantiate arrows as children of container 
+        // Instantiate arrows as children of container if needed
         while (castArrows.Count < arcSegments)
         {
             GameObject arrow = Instantiate(castArrowPrefab, origin, Quaternion.identity, castPreviewContainer.transform);
@@ -172,7 +174,7 @@ public class PlayerFishingController : MonoBehaviour
 
             castArrows[i].transform.position = point;
 
-            // Rotation
+            // Calculate rotation
             Vector3 nextPoint = (i < arcSegments - 1)
                 ? origin + dir * (castDistance * ((float)(i + 1) / (arcSegments - 1)))
                 : point + dir;
@@ -196,5 +198,14 @@ public class PlayerFishingController : MonoBehaviour
         {
             if (arrow != null) arrow.SetActive(false);
         }
+    }
+
+    /// <summary>
+    /// Function to enable or disable casting (used by ReelInWheel minigame)
+    /// </summary>
+    /// <param name="value"></param>
+    public void SetCanCast(bool value)
+    {
+        canCast = value;
     }
 }
