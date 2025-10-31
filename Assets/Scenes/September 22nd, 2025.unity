@@ -2552,7 +2552,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 235}
+  m_AnchoredPosition: {x: -517, y: 312}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!4 &186219100 stripped
@@ -4529,7 +4529,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: -116, y: 206}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &339592027
@@ -6095,6 +6095,99 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4938ef2d0b63b884381b4969f1393083, type: 3}
+--- !u!1 &458787437
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 458787441}
+  - component: {fileID: 458787440}
+  - component: {fileID: 458787439}
+  - component: {fileID: 458787438}
+  m_Layer: 0
+  m_Name: TutorialTrigger (2)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &458787438
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 458787437}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e63657fd266729940bbd65d60fa1784c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dialogue: {fileID: 458787439}
+--- !u!114 &458787439
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 458787437}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 556e96d5de38ca945a0daaddce1f15a9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dialoguePanel: {fileID: 1941351750}
+  dialogueText: {fileID: 1938582948}
+  pressEIcon: {fileID: 2041253394}
+  messages:
+  - Wow thanks for that!!!
+  - I'm really full :3
+  - My friends would love to welcome you...
+  - To our humble abode!!!
+  - Simply climb up the mountain again
+  - And go through the gray door!
+  - '*THIS IS THE END OF THE TUTORIAL*'
+  - '*THANK YOU FOR PLAYING VOIDHOOK!*'
+  nextTextAction: {fileID: 5803342122743378415, guid: 4ef96e97473e2214aa0de71490c07cb7, type: 3}
+--- !u!65 &458787440
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 458787437}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 0
+  serializedVersion: 3
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!4 &458787441
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 458787437}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 323.35, y: 1, z: 81.76}
+  m_LocalScale: {x: 5.353076, y: 1.383424, z: 6.139912}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &460642068 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8008246557826441069, guid: 4938ef2d0b63b884381b4969f1393083, type: 3}
@@ -42908,8 +43001,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   totalFishStored: 0
+  fishThresholdForDialogue: 3
   playerFishing: {fileID: 0}
   gameManager: {fileID: 1314916255}
+  nextDialogueTrigger: {fileID: 0}
 --- !u!65 &1052459103
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -45382,7 +45477,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 145.1}
+  m_AnchoredPosition: {x: -517, y: 250}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1250768225
@@ -46932,6 +47027,7 @@ MonoBehaviour:
   - If you can climb up, and grab me 5 fishies...
   - I'll show you to my friends next door!
   - You can jump and double jump using the Spacebar.
+  - Happy climbing!
   nextTextAction: {fileID: 5803342122743378415, guid: 4ef96e97473e2214aa0de71490c07cb7, type: 3}
 --- !u!65 &1322885817
 BoxCollider:
@@ -50686,18 +50782,17 @@ MonoBehaviour:
   - OH MY GOSH!!!
   - I totes forgot to tell you how to fish!!!!
   - No worries though. Papa boingboing has you :3
-  - No worries though. Papa boingboing has you :3
   - Simply press, hold, and release Enter to cast your reel
   - Make sure the bobber lands in the pond...
   - 'Wait for the fishies to bite... '
   - THEN BOOM!!!!
   - Well not really boom. But the fishes will bite!
   - Press the according key prompts to wear down the fish!
-  - Once the fishie is weakened...
   - Hold Enter again to reel it in!!!
   - Like the cycle of life, the strong outlast the weak.
   - I wonder if you'll be a strong one :3
-  - Make sure you grab me 5!!!! I'm waiting!!!
+  - Make sure you grab me 3!!!! I'm waiting!!!
+  - Simply come to my yellow square to drop them off!
   nextTextAction: {fileID: 5803342122743378415, guid: 4ef96e97473e2214aa0de71490c07cb7, type: 3}
 --- !u!65 &1587305090
 BoxCollider:
@@ -50773,8 +50868,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   totalFishStored: 0
+  fishThresholdForDialogue: 3
   playerFishing: {fileID: 0}
   gameManager: {fileID: 1314916255}
+  nextDialogueTrigger: {fileID: 0}
 --- !u!65 &1598230550
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -53664,8 +53761,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   totalFishStored: 0
+  fishThresholdForDialogue: 3
   playerFishing: {fileID: 0}
   gameManager: {fileID: 1314916255}
+  nextDialogueTrigger: {fileID: 0}
 --- !u!65 &1794692086
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -55388,7 +55487,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1941351751
 RectTransform:
   m_ObjectHideFlags: 0
@@ -55649,8 +55748,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   totalFishStored: 0
+  fishThresholdForDialogue: 3
   playerFishing: {fileID: 0}
   gameManager: {fileID: 1314916255}
+  nextDialogueTrigger: {fileID: 458787437}
 --- !u!65 &1960551626
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -56511,7 +56612,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &2041253395
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -58387,3 +58488,4 @@ SceneRoots:
   - {fileID: 6783087677494328999}
   - {fileID: 1322885818}
   - {fileID: 1587305091}
+  - {fileID: 458787441}
