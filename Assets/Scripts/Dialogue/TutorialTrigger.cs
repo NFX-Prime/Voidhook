@@ -2,19 +2,30 @@ using UnityEngine;
 
 public class TutorialTrigger : MonoBehaviour
 {
+    [Header("Dialogue Settings")]
+    // Assign the dialogue script here
     public TutorialDialogue dialogue;
 
-    /// <summary>
-    /// Essentially, will check if the player is standing on something to activate the dialogue!
-    /// </summary>
-    /// <param name="other"></param>
+    // Flag to make sure this trigger only fires once
+    private bool hasTriggered = false;
+
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player"))
+        // Check if player enters trigger and it hasn't already triggered
+        if (!hasTriggered && other.CompareTag("Player"))
         {
-            dialogue.TriggerDialogue();
-            // Optionally disable the trigger so it can't be reactivated
-            GetComponent<Collider>().enabled = false;
+            hasTriggered = true;
+
+            // Trigger the dialogue
+            if (dialogue != null)
+            {
+                dialogue.TriggerDialogue();
+            }
+
+            // Optionally disable the collider so it can't be triggered again
+            Collider col = GetComponent<Collider>();
+            if (col != null)
+                col.enabled = false;
         }
     }
 }
