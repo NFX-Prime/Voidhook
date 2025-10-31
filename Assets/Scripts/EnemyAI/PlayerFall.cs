@@ -2,9 +2,14 @@ using UnityEngine;
 
 public class PlayerFall : MonoBehaviour
 {
-    public Transform player;
+
+    public Transform targetDest;
     private void OnTriggerEnter(Collider other)
     {
-        player.position = new Vector3(-33.7f, 5.41f, 37.88f);
+        if (other.CompareTag("Player"))
+        {
+            other.transform.position = targetDest.position;
+        }
+
     }
 }
