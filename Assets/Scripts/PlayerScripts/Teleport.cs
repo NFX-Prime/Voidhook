@@ -1,12 +1,11 @@
 using UnityEngine;
 
-public class PlayerFall : MonoBehaviour
+public class Teleport : MonoBehaviour
 {
-
     public Transform targetDest;
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player"))
+        if (other.GetComponent<Movement>() != null)
         {
             other.transform.position = targetDest.position;
         }
