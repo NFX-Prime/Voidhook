@@ -1,108 +1,60 @@
 using UnityEngine;
-using UnityEngine.InputSystem;
-
-// NOTE: EVERY POND WILL BE ASSIGNED THIS SCRIPT!
-
+using System.Collections;
 
 public class PondFishing : MonoBehaviour
 {
-
-    // Getting bober prefab. We oughta make a model for the bobber itself
-    public GameObject bobberPrefab;
-    public float castHeight = 0.5f;
-    public float biteWaitMin = 1.5f;
-    public float biteWaitMax = 4f;
-
-    // The actual bobber (so we can delete it later and re-initiailize it)
-    private GameObject bobber;
-    private bool isFishing = false;
-
-    // Assign minigameUI in inspector. This is the panel with the FishingMiniGame.cs script!
     public FishingMiniGame miniGameUI;
 
-    // Other variables
-    Ray ray;
-
-
-    void Update()
+    private void OnTriggerEnter(Collider other)
     {
-        // CAST ON CLICK
-        if (Mouse.current.leftButton.wasPressedThisFrame && !isFishing)
+        // Checking if bobber hit pond
+        Debug.Log($"Something entered pond: {other.name}");
+
+        Debug.Log($"Tag detected: {other.tag}");
+
+        if (other.CompareTag("Bobber") || other.transform.root.CompareTag("Bobber"))
         {
-            ray = Camera.main.ScreenPointToRay(Mouse.current.position.ReadValue());
-            if (Physics.Raycast(ray, out RaycastHit hit))
+            Bobber bobber = other.GetComponentInParent<Bobber>();
+            if (bobber != null)
             {
-                // Only cast if clicked on THIS pond collider
-                if (hit.collider == GetComponent<Collider>())
-                {
-                    StartCoroutine(CastBobber(hit.point));
-                }
+                Debug.Log("Bobber successfully found and OnEnterPond called!");
+                bobber.OnEnterPond(this);
+            }
+            else
+            {
+                Debug.LogWarning(" No Bobber component found in parent chain.");
             }
         }
     }
 
-    System.Collections.IEnumerator CastBobber(Vector3 castPoint)
+    public void StartFishing(Bobber bobber)
     {
-        isFishing = true;
-
-        // Spawn bobber
-        bobber = Instantiate(bobberPrefab, castPoint + Vector3.up * castHeight, Quaternion.identity);
-
-        // Random time before bite
-        yield return new WaitForSeconds(Random.Range(biteWaitMin, biteWaitMax));
-
-        // Bobber wiggles (visual feedback)
-        StartCoroutine(BobberWiggle());
-
-        // Show mini-game UI
-        miniGameUI.StartMiniGame(OnFishHooked, OnFishLost);
-    }
-
-    void OnFishHooked()
-    {
-        // Remove bobber
-        Destroy(bobber);
-
-        // Start reel phase UI (IN PROGRESS)
-        ReelInWheel.Instance.StartReeling(OnFishCaught);
-    }
-
-    void OnFishLost()
-    {
-        Destroy(bobber);
-        isFishing = false;
-        Debug.Log("Fish got away...");
-    }
-
-    void OnFishCaught()
-    {
-        Debug.Log("?? Fish caught!");
-        GameManager.Instance.AddFish();
-        isFishing = false;
-    }
-
-    /// <summary>
-    /// Coroutine bobberwiggle used to make a simple wiggle
-    /// </summary>
-    /// <returns></returns>
-    System.Collections.IEnumerator BobberWiggle()
-    {
-        // Sets position based on where the bobber actually is
-        Vector3 startPos = bobber.transform.position;
-
-        // Essentially just goes up and down to go crazy bobbing.
-        for (int i = 0; i < 4; i++)
+        Debug.Log("StartFishing called for bobber: " + bobber.name);
+        if (miniGameUI == null)
         {
-            float t = 0;
-            while (t < 1f)
-            {
-                t += Time.deltaTime * 4f;
-                bobber.transform.position = startPos + Vector3.up * Mathf.Sin(t * Mathf.PI) * 0.2f;
-                yield return null;
-            }
+            Debug.LogError("MiniGameUI is null!");
+            return;
+        }
+        StartCoroutine(FishRoutine(bobber));
+    }
+
+    private IEnumerator FishRoutine(Bobber bobber)
+    {
+        float waitTime = Random.Range(1.5f, 4f);
+        Debug.Log($"Waiting {waitTime} seconds for bite...");
+        yield return new WaitForSeconds(waitTime);
+
+        if (miniGameUI == null)
+        {
+            Debug.LogError("MiniGameUI is null during FishRoutine!");
+            yield break;
         }
 
-        // Resets bobber to go back to start position.
-        bobber.transform.position = startPos;
+        Debug.Log("Triggering MiniGame now!");
+        miniGameUI.StartMiniGame(
+            () => bobber.OnFishHooked(),
+            () => bobber.OnFishLost()
+        );
     }
+
 }
