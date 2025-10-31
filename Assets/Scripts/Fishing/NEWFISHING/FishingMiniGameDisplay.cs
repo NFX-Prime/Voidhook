@@ -69,6 +69,10 @@ public class FishingMiniGame : MonoBehaviour
         onSuccess = success;
         onFail = fail;
 
+        // Disable player casting while mini-game is active
+        if (PlayerFishingController.Instance != null)
+            PlayerFishingController.Instance.SetCanCast(false);
+
         // Reset sequence length
         if (sequenceLength < 1) sequenceLength = 1;
 

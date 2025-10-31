@@ -2634,8 +2634,11 @@ MonoBehaviour:
   castHeight: 0.5
   minCastDistance: 2
   maxCastDistance: 10
-  castChargeSpeed: 5
+  castChargeSpeed: 1
   interactAction: {fileID: 9171582725643219240, guid: 4ef96e97473e2214aa0de71490c07cb7, type: 3}
+  castArrowPrefab: {fileID: 3185626715932221030, guid: 7f09a28c608ae8842a94ae326cac1734, type: 3}
+  arcSegments: 10
+  arcHeight: 2
 --- !u!4 &188418817 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4938533711494068921, guid: fb7931f5f9adbfe48a9916093a0bb44c, type: 3}
@@ -41904,6 +41907,10 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 1322588676}
+    - target: {fileID: 413907558309854668, guid: 9954a664efb33314ab118d7c15a32dae, type: 3}
+      propertyPath: m_VersionIndex
+      value: 16
+      objectReference: {fileID: 0}
     - target: {fileID: 413907558309854668, guid: 9954a664efb33314ab118d7c15a32dae, type: 3}
       propertyPath: m_Tangents.Array.data[366].x
       value: NaN
