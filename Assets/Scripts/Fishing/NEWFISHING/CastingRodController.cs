@@ -39,10 +39,13 @@ public class PlayerFishingController : MonoBehaviour
     private bool isCharging = false;
     private float castCharge = 0f;
     private GameObject currentBobber;
+    private bool blockCastUntilRelease = false;
 
     // This event is called when the line breaks
     public System.Action onLineBreak;
 
+    // Setting up proprerty to see if fishing is activated.
+    public bool IsFishingSessionActive { get; private set; } = false;
 
     // Whether player can cast (disabled while in minigame)
     private bool canCast = true;
@@ -129,7 +132,7 @@ public class PlayerFishingController : MonoBehaviour
     void OnCastStarted(InputAction.CallbackContext context)
     {
         // Prevent casting while in reeling minigame
-        if (!canCast) return;
+        if (!canCast || IsFishingSessionActive || blockCastUntilRelease) return;
 
         isCharging = true;
         castCharge = 0f;
@@ -150,6 +153,10 @@ public class PlayerFishingController : MonoBehaviour
     /// <param name="context"></param>
     void OnCastReleased(InputAction.CallbackContext context)
     {
+
+        // Release always clears the blocking flag
+        blockCastUntilRelease = false;
+
         // Prevent casting while in reeling minigame
         if (!isCharging || !canCast) return;
 
@@ -232,5 +239,27 @@ public class PlayerFishingController : MonoBehaviour
     public void SetCanCast(bool value)
     {
         canCast = value;
+    }
+
+    /// <summary>
+    /// Function that starts fishing
+    /// </summary>
+    public void StartFishingSession()
+    {
+        IsFishingSessionActive = true;
+        SetCanCast(false);
+
+        // Cancel any ongoing cast
+        isCharging = false;
+        ClearCastPreview();
+
+        // Prevent casting until button is released
+        blockCastUntilRelease = true;
+    }
+
+    public void EndFishingSession()
+    {
+        IsFishingSessionActive = false;
+        SetCanCast(true);
     }
 }

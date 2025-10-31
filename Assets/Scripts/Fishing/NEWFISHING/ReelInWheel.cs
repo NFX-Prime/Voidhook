@@ -46,7 +46,7 @@ public class ReelInWheel : MonoBehaviour
         // Disable player casting while in minigame
         if (PlayerFishingController.Instance != null)
         {
-            PlayerFishingController.Instance.SetCanCast(false);
+            PlayerFishingController.Instance.StartFishingSession();
 
             // Subscribe to line break
             PlayerFishingController.Instance.onLineBreak += CancelReeling;
@@ -57,7 +57,7 @@ public class ReelInWheel : MonoBehaviour
     {
         if (!active) return;
 
-        // Player is reeling (Holding Left Mouse Button)
+        // Player is reeling (Press and hold the interact button)
         bool isReeling = wheelAction.action.IsPressed();
 
         if (isReeling)
@@ -104,7 +104,11 @@ public class ReelInWheel : MonoBehaviour
 
         // Re-enable player casting
         if (PlayerFishingController.Instance != null)
-            PlayerFishingController.Instance.SetCanCast(true);
+        {
+            // re-enable casting
+            PlayerFishingController.Instance.EndFishingSession(); 
+            PlayerFishingController.Instance.onLineBreak -= CancelReeling;
+        }
     }
 
 }

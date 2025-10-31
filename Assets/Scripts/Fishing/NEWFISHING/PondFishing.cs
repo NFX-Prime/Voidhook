@@ -41,29 +41,26 @@ public class PondFishing : MonoBehaviour
     private IEnumerator FishRoutine(Bobber bobber)
     {
         float waitTime = Random.Range(1.5f, 4f);
-        Debug.Log($"Waiting {waitTime} seconds for bite...");
         yield return new WaitForSeconds(waitTime);
 
-        if (miniGameUI == null)
+        // Check if bobber still exists and is the same one
+        if (bobber == null || !bobber.gameObject.activeInHierarchy)
         {
-            Debug.LogError("MiniGameUI is null during FishRoutine!");
-            yield break;
+            yield break; // player cast away or bobber destroyed
         }
 
-        // Subscribe to line break to cancel mini-game
-        if (PlayerFishingController.Instance != null)
+        // Start the minigame
+        if (miniGameUI != null)
         {
-            PlayerFishingController.Instance.onLineBreak += () =>
-            {
-                miniGameUI.CancelMiniGame(); // We'll add this function
-            };
-        }
+            // Tell PlayerFishingController that a fishing session starts
+            if (PlayerFishingController.Instance != null)
+                PlayerFishingController.Instance.StartFishingSession();
 
-        Debug.Log("Triggering MiniGame now!");
-        miniGameUI.StartMiniGame(
-            () => bobber.OnFishHooked(),
-            () => bobber.OnFishLost()
-        );
+            miniGameUI.StartMiniGame(
+                () => { bobber.OnFishHooked(); PlayerFishingController.Instance?.EndFishingSession(); },
+                () => { bobber.OnFishLost(); PlayerFishingController.Instance?.EndFishingSession(); }
+            );
+        }
     }
 
 }
