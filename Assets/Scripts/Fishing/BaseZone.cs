@@ -8,14 +8,16 @@ public class BaseZone : MonoBehaviour
     // How many fish must be dropped off before unlocking dialogue
     public int fishThresholdForDialogue = 3;
 
+    // Set up playerFishing script
     public FishingSystem playerFishing;
     public GameManager gameManager;
 
-    // The dialogue trigger to unlock
+    // The dialogue trigger to unlock (either disabled GameObject or disabled Collider)
     public GameObject nextDialogueTrigger;
 
     private void OnTriggerEnter(Collider other)
     {
+        // Only allow player to deposit
         if (other.CompareTag("Player"))
         {
             int fishToDeposit = gameManager.fishCount;
@@ -30,15 +32,33 @@ public class BaseZone : MonoBehaviour
                 // Now call deposit (which resets count)
                 gameManager.DepositFish();
 
-                // Unlock dialogue if threshold met
+                // Check if threshold reached and unlock dialogue
                 if (totalFishStored >= fishThresholdForDialogue && nextDialogueTrigger != null)
                 {
-                    Collider col = nextDialogueTrigger.GetComponent<Collider>();
-                    if (col != null && !col.enabled)
+                    // Check if the GameObject is inactive in hierarchy
+                    if (!nextDialogueTrigger.activeSelf)
                     {
-                        col.enabled = true;
-                        Debug.Log("Next dialogue unlocked!");
+                        nextDialogueTrigger.SetActive(true);
+                        Debug.Log("Next dialogue trigger GameObject activated!");
                     }
+                    else
+                    {
+                        // If the GameObject is already active, try enabling its collider instead
+                        Collider col = nextDialogueTrigger.GetComponent<Collider>();
+                        if (col != null && !col.enabled)
+                        {
+                            col.enabled = true;
+                            Debug.Log("Next dialogue trigger collider re-enabled!");
+                        }
+                        else
+                        {
+                            Debug.Log("Next dialogue trigger was already active and collider enabled.");
+                        }
+                    }
+                }
+                else
+                {
+                    Debug.Log($" Not enough fish yet: {totalFishStored}/{fishThresholdForDialogue}");
                 }
             }
             else
