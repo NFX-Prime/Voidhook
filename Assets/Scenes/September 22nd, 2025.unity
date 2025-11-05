@@ -6347,14 +6347,9 @@ MonoBehaviour:
   dialogueText: {fileID: 1938582948}
   pressEIcon: {fileID: 2041253394}
   messages:
-  - Wow thanks for that!!!
-  - I'm really full :3
-  - My friends would love to welcome you...
-  - To our humble abode!!!
-  - Simply climb up the mountain again
-  - And go through the gray door!
-  - '*THIS IS THE END OF THE TUTORIAL*'
-  - '*THANK YOU FOR PLAYING VOIDHOOK!*'
+  - Never seen that kind of lifeform before.
+  - It doesn't look very friendly either.
+  - I should definitely keep my distance, and keep moving forward.
   nextTextAction: {fileID: 5803342122743378415, guid: 4ef96e97473e2214aa0de71490c07cb7, type: 3}
 --- !u!65 &458787440
 BoxCollider:
@@ -6385,12 +6380,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 458787437}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 323.35, y: 1, z: 81.76}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 52.950012, y: -11.820697, z: 26.160004}
   m_LocalScale: {x: 5.353076, y: 1.383424, z: 6.139912}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 1344768327}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &460642068 stripped
 Transform:
@@ -43658,7 +43653,6 @@ GameObject:
   - component: {fileID: 1059287190}
   - component: {fileID: 1059287189}
   - component: {fileID: 1059287188}
-  - component: {fileID: 1059287192}
   - component: {fileID: 1059287193}
   m_Layer: 0
   m_Name: PoisonPond
@@ -43756,18 +43750,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 965090529}
   m_LocalEulerAnglesHint: {x: 0, y: -44.664, z: 0}
---- !u!114 &1059287192
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1059287187}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7dd3e1cf54ac63c45ae57359f22eea7c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!54 &1059287193
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -47444,17 +47426,9 @@ MonoBehaviour:
   dialogueText: {fileID: 1938582948}
   pressEIcon: {fileID: 2041253394}
   messages:
-  - Woah!!!!! Where did you come from?
-  - Hey don't just stand there. Use WASD to come to me!
-  - Hi there :3 aren't I quite the cutie?
-  - Well this cutie is quite hungry...
-  - Don't worry!!! I'm not gonna eat you!!! I'm too small for that anyways.
-  - How about this...
-  - There's a fishing pond up on the mountain.
-  - If you can climb up, and grab me 5 fishies...
-  - I'll show you to my friends next door!
-  - You can jump and double jump using the Spacebar.
-  - Happy climbing!
+  - Ouch.. That was a bad crash..
+  - The ship is badly damaged, probably needs a lot of matter.
+  - Never been on this rock before, maybe I can get something to repair it.
   nextTextAction: {fileID: 5803342122743378415, guid: 4ef96e97473e2214aa0de71490c07cb7, type: 3}
 --- !u!65 &1322885817
 BoxCollider:
@@ -47485,12 +47459,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1322885815}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 325.58, y: 1.13, z: 70.35}
-  m_LocalScale: {x: 20.609882, y: 2.2639, z: 10.047641}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 54.5, y: -11.690697, z: -4.799999}
+  m_LocalScale: {x: 47.390373, y: 2.1998768, z: 9.763494}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 1344768327}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1322885819
 MonoBehaviour:
@@ -47818,6 +47792,9 @@ Transform:
   - {fileID: 1742529113}
   - {fileID: 136048747}
   - {fileID: 209561538}
+  - {fileID: 1322885818}
+  - {fileID: 1587305091}
+  - {fileID: 458787441}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &1345551303 stripped
@@ -48690,7 +48667,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6342545402283412795, guid: 474d480d3c9eefd4cbe227a2955240fc, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -8.9
+      value: -8.8
       objectReference: {fileID: 0}
     - target: {fileID: 6342545402283412795, guid: 474d480d3c9eefd4cbe227a2955240fc, type: 3}
       propertyPath: m_LocalPosition.y
@@ -48698,7 +48675,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6342545402283412795, guid: 474d480d3c9eefd4cbe227a2955240fc, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 100.8
+      value: 101.2
       objectReference: {fileID: 0}
     - target: {fileID: 6342545402283412795, guid: 474d480d3c9eefd4cbe227a2955240fc, type: 3}
       propertyPath: m_LocalRotation.w
@@ -51466,20 +51443,9 @@ MonoBehaviour:
   dialogueText: {fileID: 1938582948}
   pressEIcon: {fileID: 2041253394}
   messages:
-  - OH MY GOSH!!!
-  - I totes forgot to tell you how to fish!!!!
-  - No worries though. Papa boingboing has you :3
-  - Simply press, hold, and release Enter to cast your reel
-  - Make sure the bobber lands in the pond...
-  - 'Wait for the fishies to bite... '
-  - THEN BOOM!!!!
-  - Well not really boom. But the fishes will bite!
-  - Press the according key prompts to wear down the fish!
-  - Hold Enter again to reel it in!!!
-  - Like the cycle of life, the strong outlast the weak.
-  - I wonder if you'll be a strong one :3
-  - Make sure you grab me 3!!!! I'm waiting!!!
-  - Simply come to my yellow square to drop them off!
+  - A lake?
+  - My multitool has a fishing rod.
+  - Maybe I can catch something for some fuel.
   nextTextAction: {fileID: 5803342122743378415, guid: 4ef96e97473e2214aa0de71490c07cb7, type: 3}
 --- !u!65 &1587305090
 BoxCollider:
@@ -51510,12 +51476,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1587305087}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 324.49, y: 24.66, z: 111.98}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 54.089996, y: 11.839303, z: 56.380005}
   m_LocalScale: {x: 20.609882, y: 2.2639, z: 10.047641}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 1344768327}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &1591309886 stripped
 Transform:
@@ -56673,7 +56639,7 @@ Transform:
   m_GameObject: {fileID: 1960551623}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 173.92, y: 0.3, z: 21.01}
+  m_LocalPosition: {x: 174.8, y: 0.3, z: -24.6}
   m_LocalScale: {x: 4.8597536, y: 0.41025785, z: 4.7440057}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -59794,6 +59760,3 @@ SceneRoots:
   - {fileID: 1887814050}
   - {fileID: 1968284583}
   - {fileID: 6783087677494328999}
-  - {fileID: 1322885818}
-  - {fileID: 1587305091}
-  - {fileID: 458787441}
