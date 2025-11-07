@@ -22,7 +22,9 @@ public class BossAI : MonoBehaviour
 
     public int numtargets = 0;
 
-    public bool foundPlayer = false;
+    public float suspicion;
+
+    public float runningInc;
 
     // Reference to player's Movement script
     private Movement playerMovement;  // reference to player script
@@ -46,42 +48,56 @@ public class BossAI : MonoBehaviour
         if (targets == null || targetSwaps == null) return;
 
         // Always chase the player, but adjust speed based on walking/idle
-        distance = Vector3.Distance(player.position, transform.position);
+        distance = Vector3.Distance(player.transform.position, transform.position);
 
-
-
-
-        if (distance < 10.0f && foundPlayer == false )
+        if (distance < 10.0f)
         {
-            agent.SetDestination(player.position);
-            foundPlayer = true;
+            suspicion += 20f * Time.deltaTime;
         }
-        else if (foundPlayer == true)
+        else if (distance >= 10.0f && distance < 14.0f)
         {
-            agent.SetDestination(player.position);
-            agent.speed = chaseSpeed;
+            suspicion += 10f * Time.deltaTime;
+        }
+        else if(distance >= 14.0f && distance < 20.0f)
+        {
+            suspicion += 5f * Time.deltaTime;
         }
         else
         {
-            for (int i = 0; i < targetSwaps.Length; i++)
+            suspicion -= 2.5f * Time.deltaTime;
+
+            if (suspicion < 0)
             {
-                if (targetSwaps[i].targetted)
-                {
-
-                    float distance = Vector3.Distance(transform.position, targets[i].position);
-                    if (distance > stopDistance)
-                    {
-                        agent.SetDestination(targets[i].position);
-                    }
-                    else
-                    {
-                        // stop when close enough (TEMPORARY)
-                        agent.isStopped = true;
-                    }
-                }
-
+                suspicion = 0;
             }
         }
+
+        if(suspicion >= 100)
+        {
+            agent.SetDestination(player.transform.position);
+            suspicion = 100;
+        }
+        else
+                {
+                    for (int i = 0; i < targetSwaps.Length; i++)
+                    {
+                        if (targetSwaps[i].targetted)
+                        {
+
+                            float distance = Vector3.Distance(transform.position, targets[i].position);
+                            if (distance > stopDistance)
+                            {
+                                agent.SetDestination(targets[i].position);
+                            }
+                            else
+                            {
+                                // stop when close enough (TEMPORARY)
+                                agent.isStopped = true;
+                            }
+                        }
+
+                    }
+                }
 
     }
 

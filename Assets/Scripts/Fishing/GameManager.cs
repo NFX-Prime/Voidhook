@@ -4,12 +4,14 @@ using TMPro;
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
+    public BossAI boss;
 
     public int fishCount = 0;
     public int depositedFishCount = 0;
     [Header("UI Reference")]
     public TMP_Text fishCountText;
     public TMP_Text fishDepositedText;
+    public TMP_Text suspicionText;
     public TMP_Text playerWin;
 
     private void Awake()
@@ -25,6 +27,7 @@ public class GameManager : MonoBehaviour
     {
         UpdateFishUI();
         UpdateDepositedFishUI();
+        UpdateSuspicionUI();
     }
 
     private void Update()
@@ -54,6 +57,16 @@ public class GameManager : MonoBehaviour
             fishDepositedText.text = "Deposited Fish: " + depositedFishCount;
         }
     }
+    /// <summary>
+    /// function to update suspicion
+    /// </summary>
+    void UpdateSuspicionUI()
+    {
+        if (suspicionText != null)
+        {
+            suspicionText.text = "Suspicion: " + boss.suspicion;
+        }
+    }
 
     // Function is called by BaseZone when player deposits fish
     public void DepositFish()
@@ -77,5 +90,7 @@ public class GameManager : MonoBehaviour
 
 
     }
+
+
 
 }
