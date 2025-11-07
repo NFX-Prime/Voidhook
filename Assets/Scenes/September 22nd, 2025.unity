@@ -2759,7 +2759,7 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 2
-  m_Speed: 3.5
+  m_Speed: 4
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 120
@@ -2798,7 +2798,7 @@ MonoBehaviour:
   targetCurrent: {fileID: 0}
   targetNext: {fileID: 0}
   player: {fileID: 187751587}
-  chaseSpeed: 3
+  chaseSpeed: 5
   slowSpeed: 1.5
   stopDistance: 1.5
   distance: 0
@@ -43106,6 +43106,10 @@ PrefabInstance:
       propertyPath: runSpeed
       value: 4
       objectReference: {fileID: 0}
+    - target: {fileID: 2669569735067195046, guid: 9954a664efb33314ab118d7c15a32dae, type: 3}
+      propertyPath: walkSpeed
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 2725098448256990594, guid: 9954a664efb33314ab118d7c15a32dae, type: 3}
       propertyPath: m_Mesh
       value: 
@@ -47692,7 +47696,7 @@ MonoBehaviour:
   messages:
   - Ouch.. That was a bad crash..
   - The ship is badly damaged, probably needs a lot of matter.
-  - Never been on this rock before, maybe I can get something to repair it.
+  - Never been on this rock before, maybe there's some lifeforms I can use.
   nextTextAction: {fileID: 5803342122743378415, guid: 4ef96e97473e2214aa0de71490c07cb7, type: 3}
 --- !u!65 &1322885817
 BoxCollider:
@@ -59298,7 +59302,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 4148955215904055120, guid: 6a97f90d42838aa459829fdd24e88afb, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5796493109015208229, guid: 6a97f90d42838aa459829fdd24e88afb, type: 3}
       propertyPath: m_Pivot.x
@@ -59386,7 +59390,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9062023147853281996, guid: 6a97f90d42838aa459829fdd24e88afb, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

@@ -41,8 +41,8 @@ public class Movement : MonoBehaviour
     public float airDeceleration = 2.0f;
 
     [Header("Movement Speeds")]
-    public float runSpeed = 5.0f;
-    public float walkSpeed = 2.0f;
+    public float runSpeed = 4.0f;
+    public float walkSpeed = 5.0f;
 
     [ReadOnly]
     public float currentSpeed = 0f;
