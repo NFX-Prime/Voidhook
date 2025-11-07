@@ -46,10 +46,11 @@ public class BossAI : MonoBehaviour
     void Update()
     {
         if (targets == null || targetSwaps == null) return;
-
-        // Always chase the player, but adjust speed based on walking/idle
+        
+        // calc distance between player and boss
         distance = Vector3.Distance(player.transform.position, transform.position);
 
+        // Change amount of suspicion gained based on distance
         if (distance < 10.0f)
         {
             suspicion += 20f * Time.deltaTime;
@@ -72,32 +73,34 @@ public class BossAI : MonoBehaviour
             }
         }
 
+        // chase if suspicion reaches maximum
         if(suspicion >= 100)
         {
             agent.SetDestination(player.transform.position);
             suspicion = 100;
         }
+        // else cycle through wander targets
         else
+        {
+            for (int i = 0; i < targetSwaps.Length; i++)
+            {
+                if (targetSwaps[i].targetted)
                 {
-                    for (int i = 0; i < targetSwaps.Length; i++)
+
+                    float distance = Vector3.Distance(transform.position, targets[i].position);
+                    if (distance > stopDistance)
                     {
-                        if (targetSwaps[i].targetted)
-                        {
-
-                            float distance = Vector3.Distance(transform.position, targets[i].position);
-                            if (distance > stopDistance)
-                            {
-                                agent.SetDestination(targets[i].position);
-                            }
-                            else
-                            {
-                                // stop when close enough (TEMPORARY)
-                                agent.isStopped = true;
-                            }
-                        }
-
+                        agent.SetDestination(targets[i].position);
+                    }
+                    else
+                    {
+                        // stop when close enough (TEMPORARY)
+                        agent.isStopped = true;
                     }
                 }
+
+            }
+        }
 
     }
 
