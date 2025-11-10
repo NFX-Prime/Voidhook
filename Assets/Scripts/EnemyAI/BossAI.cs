@@ -24,7 +24,12 @@ public class BossAI : MonoBehaviour
 
     public float suspicion;
 
+    public float outerRad;
+    public float innerRad;
+    public float midRad;
+
     public float runningInc;
+    public bool isChasing = false;
 
     // Reference to player's Movement script
     private Movement playerMovement;  // reference to player script
@@ -50,20 +55,20 @@ public class BossAI : MonoBehaviour
         // calc distance between player and boss
         distance = Vector3.Distance(player.transform.position, transform.position);
 
-        // Change amount of suspicion gained based on distance
-        if (distance < 10.0f)
+        // Change amount of suspicion gained based on distance if player is not hiding
+        if (distance < innerRad)
         {
             suspicion += 20f * Time.deltaTime;
         }
-        else if (distance >= 10.0f && distance < 14.0f)
+        else if (distance >= innerRad && distance < midRad)
         {
             suspicion += 10f * Time.deltaTime;
         }
-        else if(distance >= 14.0f && distance < 20.0f)
+        else if(distance >= midRad && distance < outerRad)
         {
             suspicion += 5f * Time.deltaTime;
         }
-        else
+        else if (distance > outerRad && isChasing) {
         {
             suspicion -= 2.5f * Time.deltaTime;
 
@@ -120,5 +125,10 @@ public class BossAI : MonoBehaviour
 
         }
 
+    }
+
+    public void Chase()
+    {
+        agent.SetDestination(player.transform.position);
     }
 }

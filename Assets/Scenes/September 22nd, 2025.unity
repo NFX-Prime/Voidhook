@@ -2820,6 +2820,9 @@ MonoBehaviour:
   distance: 0
   numtargets: 0
   suspicion: 0
+  outerRad: 18
+  innerRad: 13
+  midRad: 8
   runningInc: 0
 --- !u!4 &186219100 stripped
 Transform:
