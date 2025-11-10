@@ -171,6 +171,15 @@ public partial class @CharacterInputActions: IInputActionCollection2, IDisposabl
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Cast"",
+                    ""type"": ""Button"",
+                    ""id"": ""78d73e59-bbb2-4a33-9be6-92e414e9f532"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -408,7 +417,7 @@ public partial class @CharacterInputActions: IInputActionCollection2, IDisposabl
                 {
                     ""name"": """",
                     ""id"": ""8179d281-4860-4b46-88c7-a9f5e7d288a2"",
-                    ""path"": ""<Keyboard>/enter"",
+                    ""path"": ""<Keyboard>/e"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -424,6 +433,17 @@ public partial class @CharacterInputActions: IInputActionCollection2, IDisposabl
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""ContinueText"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""8c328ff4-219e-4a8e-b040-a6cde601bfa3"",
+                    ""path"": ""<Keyboard>/enter"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""Cast"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -1020,6 +1040,7 @@ public partial class @CharacterInputActions: IInputActionCollection2, IDisposabl
         m_Player_Quit = m_Player.FindAction("Quit", throwIfNotFound: true);
         m_Player_Interact = m_Player.FindAction("Interact", throwIfNotFound: true);
         m_Player_ContinueText = m_Player.FindAction("ContinueText", throwIfNotFound: true);
+        m_Player_Cast = m_Player.FindAction("Cast", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -1122,6 +1143,7 @@ public partial class @CharacterInputActions: IInputActionCollection2, IDisposabl
     private readonly InputAction m_Player_Quit;
     private readonly InputAction m_Player_Interact;
     private readonly InputAction m_Player_ContinueText;
+    private readonly InputAction m_Player_Cast;
     /// <summary>
     /// Provides access to input actions defined in input action map "Player".
     /// </summary>
@@ -1169,6 +1191,10 @@ public partial class @CharacterInputActions: IInputActionCollection2, IDisposabl
         /// Provides access to the underlying input action "Player/ContinueText".
         /// </summary>
         public InputAction @ContinueText => m_Wrapper.m_Player_ContinueText;
+        /// <summary>
+        /// Provides access to the underlying input action "Player/Cast".
+        /// </summary>
+        public InputAction @Cast => m_Wrapper.m_Player_Cast;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -1222,6 +1248,9 @@ public partial class @CharacterInputActions: IInputActionCollection2, IDisposabl
             @ContinueText.started += instance.OnContinueText;
             @ContinueText.performed += instance.OnContinueText;
             @ContinueText.canceled += instance.OnContinueText;
+            @Cast.started += instance.OnCast;
+            @Cast.performed += instance.OnCast;
+            @Cast.canceled += instance.OnCast;
         }
 
         /// <summary>
@@ -1260,6 +1289,9 @@ public partial class @CharacterInputActions: IInputActionCollection2, IDisposabl
             @ContinueText.started -= instance.OnContinueText;
             @ContinueText.performed -= instance.OnContinueText;
             @ContinueText.canceled -= instance.OnContinueText;
+            @Cast.started -= instance.OnCast;
+            @Cast.performed -= instance.OnCast;
+            @Cast.canceled -= instance.OnCast;
         }
 
         /// <summary>
@@ -1623,6 +1655,13 @@ public partial class @CharacterInputActions: IInputActionCollection2, IDisposabl
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnContinueText(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "Cast" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnCast(InputAction.CallbackContext context);
     }
     /// <summary>
     /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "UI" which allows adding and removing callbacks.

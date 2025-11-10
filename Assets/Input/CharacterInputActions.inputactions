@@ -85,6 +85,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "Cast",
+                    "type": "Button",
+                    "id": "78d73e59-bbb2-4a33-9be6-92e414e9f532",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -322,7 +331,7 @@
                 {
                     "name": "",
                     "id": "8179d281-4860-4b46-88c7-a9f5e7d288a2",
-                    "path": "<Keyboard>/enter",
+                    "path": "<Keyboard>/e",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -338,6 +347,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "ContinueText",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "8c328ff4-219e-4a8e-b040-a6cde601bfa3",
+                    "path": "<Keyboard>/enter",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Keyboard&Mouse",
+                    "action": "Cast",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

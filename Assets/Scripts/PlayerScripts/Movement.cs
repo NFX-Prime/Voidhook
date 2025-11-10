@@ -61,7 +61,6 @@ public class Movement : MonoBehaviour
     CollisionFlags flags;
 
 
-
     private void Awake()
     {
         controller = gameObject.AddComponent<CharacterController>();
