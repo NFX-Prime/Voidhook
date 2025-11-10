@@ -30,6 +30,7 @@ public class HideSpot : MonoBehaviour
         interactAction.action.performed -= OnInteract;
     }
 
+    // Essentially, the player can hide if it collides with the collider box of any sort in the object. So if we want an object to both be able to be stood on and hide inside, it'll need 2 colliders. One for the physical, which wont allow the player to pass through, and one for the hiding that allows the player to pass through.
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player") && !PlayerState.Instance.isHidden)
