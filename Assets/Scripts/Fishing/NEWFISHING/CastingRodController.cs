@@ -54,6 +54,8 @@ public class PlayerFishingController : MonoBehaviour
     // Cached mouse target for preview and cast
     private Vector3 mouseWorldTarget;
 
+    float groundBlend;
+
     void Awake()
     {
         // Setup singleton
@@ -182,43 +184,59 @@ public class PlayerFishingController : MonoBehaviour
     /// </summary>
     void UpdateCastPreview()
     {
-        // Get mouse target each frame
+        // Get mouse target each frame (real ground point)
         mouseWorldTarget = GetMouseWorldPoint();
 
-        // Compute direction from player to mouse target
-        Vector3 direction = (mouseWorldTarget - transform.position);
-        direction.y = 0f;
-        float distance = Mathf.Clamp(direction.magnitude, minCastDistance, maxCastDistance);
-        Vector3 dir = direction.normalized;
-
+        // Compute direction and distance from player to hit point
         Vector3 origin = transform.position + Vector3.up * castHeight;
+        Vector3 toTarget = mouseWorldTarget - origin;
 
-        // Instantiate arrows as children of container if needed
+        // Clamp max distance horizontally
+        Vector3 horizontalDir = new Vector3(toTarget.x, 0f, toTarget.z).normalized;
+        float horizontalDist = Mathf.Clamp(new Vector3(toTarget.x, 0f, toTarget.z).magnitude, minCastDistance, maxCastDistance);
+        Vector3 targetPos = origin + horizontalDir * horizontalDist;
+
+        // Adjust final target height to actual terrain height
+        targetPos.y = mouseWorldTarget.y + 0.1f; // small offset to prevent z-fighting
+
+        // Instantitate each arrow to display
         while (castArrows.Count < arcSegments)
         {
             GameObject arrow = Instantiate(castArrowPrefab, origin, Quaternion.identity, castPreviewContainer.transform);
             castArrows.Add(arrow);
         }
 
-        // Set arrow positions in world-space
+        // Update arrow positions to form a smooth arc from origin to real ground hit
         for (int i = 0; i < arcSegments; i++)
         {
             float t = (float)i / (arcSegments - 1);
-            Vector3 point = origin + dir * (distance * t);
-            point.y += Mathf.Sin(t * Mathf.PI) * arcHeight;
+
+            // Interpolate between start and end positions
+            Vector3 point = Vector3.Lerp(origin, targetPos, t);
+
+            // Add the arc height relative to curve position
+            float heightOffset = Mathf.Sin(t * Mathf.PI) * arcHeight;
+            point.y += heightOffset;
+
+            // Ensure smooth descent to actual ground
+            if (t > 0.8f)
+            {
+                // blend last 20% down to ground
+                groundBlend = (t - 0.8f) / 0.2f; 
+                point.y = Mathf.Lerp(point.y, targetPos.y, groundBlend);
+            }
+
             castArrows[i].transform.position = point;
 
-            Vector3 nextPoint = (i < arcSegments - 1)
-                ? origin + dir * (distance * ((float)(i + 1) / (arcSegments - 1)))
-                : point + dir;
-
-            nextPoint.y += (i < arcSegments - 1)
-                ? Mathf.Sin(((float)(i + 1) / (arcSegments - 1)) * Mathf.PI) * arcHeight
-                : 0;
-
-            Vector3 arrowDir = (nextPoint - point).normalized;
-            if (arrowDir != Vector3.zero)
-                castArrows[i].transform.rotation = Quaternion.LookRotation(arrowDir);
+            // Orientation of each arrow segment
+            if (i < arcSegments - 1)
+            {
+                Vector3 nextPoint = Vector3.Lerp(origin, targetPos, (float)(i + 1) / (arcSegments - 1));
+                nextPoint.y += Mathf.Sin(((float)(i + 1) / (arcSegments - 1)) * Mathf.PI) * arcHeight;
+                Vector3 dir = (nextPoint - point).normalized;
+                if (dir != Vector3.zero)
+                    castArrows[i].transform.rotation = Quaternion.LookRotation(dir);
+            }
 
             castArrows[i].SetActive(true);
         }
