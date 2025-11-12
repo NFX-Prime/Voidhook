@@ -56,6 +56,7 @@ public class PlayerFishingController : MonoBehaviour
 
     float groundBlend;
 
+
     void Awake()
     {
         // Setup singleton
@@ -214,11 +215,11 @@ public class PlayerFishingController : MonoBehaviour
             // Interpolate between start and end positions
             Vector3 point = Vector3.Lerp(origin, targetPos, t);
 
-            // Add the arc height relative to curve position
+            // Adding arc height relative to curve position
             float heightOffset = Mathf.Sin(t * Mathf.PI) * arcHeight;
             point.y += heightOffset;
 
-            // Ensure smooth descent to actual ground
+            // 
             if (t > 0.8f)
             {
                 // blend last 20% down to ground

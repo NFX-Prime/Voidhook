@@ -18,10 +18,6 @@ public class Movement : MonoBehaviour
     // Potential dash button to be made in the future (maybe)
     // private bool dash = false;
 
-    // Hiding boolean
-    bool isHiding = false;
-
-
     private CharacterController controller;
     private Vector3 playerVelocity;
     public bool groundedPlayer;

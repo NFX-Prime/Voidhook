@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 1915947544995409974}
   - component: {fileID: 7008149125158933601}
   - component: {fileID: 6210035806161089824}
-  m_Layer: 6
+  m_Layer: 7
   m_Name: Bobber
   m_TagString: Bobber
   m_Icon: {fileID: 0}

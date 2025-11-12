@@ -1,5 +1,6 @@
 using UnityEngine;
 using TMPro;
+using UnityEditor.SearchService;
 
 public class GameManager : MonoBehaviour
 {
@@ -14,6 +15,8 @@ public class GameManager : MonoBehaviour
     public TMP_Text suspicionText;
     public TMP_Text playerWin;
 
+    public bool playerAlive;
+    public int playerDeathCount = 0;
     private void Awake()
     {
         // Singleton pattern for easy access
@@ -28,6 +31,8 @@ public class GameManager : MonoBehaviour
         UpdateFishUI();
         UpdateDepositedFishUI();
         UpdateSuspicionUI();
+
+        playerAlive = true;
     }
 
     private void Update()
@@ -89,6 +94,15 @@ public class GameManager : MonoBehaviour
         }
 
 
+    }
+
+    /// <summary>
+    /// Method that handles the player dying
+    /// </summary>
+    public void playerDies()
+    {
+        playerAlive = false;
+        playerDeathCount++;
     }
 
 
