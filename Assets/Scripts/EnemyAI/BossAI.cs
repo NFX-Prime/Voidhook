@@ -69,14 +69,12 @@ public class BossAI : MonoBehaviour
             suspicion += 5f * Time.deltaTime;
         }
         else if (distance > outerRad && isChasing)
-        {
-            {
-                suspicion -= 2.5f * Time.deltaTime;
+        {            
+            suspicion -= 2.5f * Time.deltaTime;
 
-                if (suspicion < 0)
-                {
-                    suspicion = 0;
-                }
+            if (suspicion < 0)
+            {
+                suspicion = 0;
             }
         }
 
