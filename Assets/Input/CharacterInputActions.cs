@@ -416,6 +416,17 @@ public partial class @CharacterInputActions: IInputActionCollection2, IDisposabl
                 },
                 {
                     ""name"": """",
+                    ""id"": ""bddfdba1-8a4e-4eeb-b639-4a5525b9ffdb"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Quit"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
                     ""id"": ""8179d281-4860-4b46-88c7-a9f5e7d288a2"",
                     ""path"": ""<Keyboard>/e"",
                     ""interactions"": """",
