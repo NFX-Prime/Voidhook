@@ -53671,6 +53671,7 @@ GameObject:
   - component: {fileID: 1960551627}
   - component: {fileID: 1960551626}
   - component: {fileID: 1960551625}
+  - component: {fileID: 1960551629}
   m_Layer: 0
   m_Name: BaseZone (1)
   m_TagString: Untagged
@@ -53785,6 +53786,20 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1960551623}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &1960551629
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1960551623}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8ed4be7d8c7691b40814ff80d0f6ec9b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  requiredFish: 5
+  finishSceneName: FinishScene
 --- !u!4 &1962879885 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 892906897242169040, guid: eb77765435c0c8e48a86c7def4dd35f4, type: 3}
@@ -55918,7 +55933,7 @@ PrefabInstance:
     - target: {fileID: 1449093161479770037, guid: c27cac8dd8ef9de41af3e883d1436d20, type: 3}
       propertyPath: player
       value: 
-      objectReference: {fileID: 187751587}
+      objectReference: {fileID: 1561721057}
     - target: {fileID: 1449093161479770037, guid: c27cac8dd8ef9de41af3e883d1436d20, type: 3}
       propertyPath: innerRad
       value: 11
@@ -56261,6 +56276,10 @@ PrefabInstance:
     - target: {fileID: 3929449078301420509, guid: 2b1a72483403c494aa71fd53e428b2c0, type: 3}
       propertyPath: m_Layer
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3929449078301420509, guid: 2b1a72483403c494aa71fd53e428b2c0, type: 3}
+      propertyPath: m_TagString
+      value: Player
       objectReference: {fileID: 0}
     - target: {fileID: 4276307615147120432, guid: 2b1a72483403c494aa71fd53e428b2c0, type: 3}
       propertyPath: m_Layer
