@@ -8,6 +8,8 @@ public class PlayerState : MonoBehaviour
     // This tells enemies if the player is hidden
     public bool isHidden = false;
 
+    public int playerHealth = 3;
+
     private void Awake()
     {
         Instance = this;

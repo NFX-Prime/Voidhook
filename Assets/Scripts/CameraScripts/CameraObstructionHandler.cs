@@ -10,6 +10,7 @@ public class CameraObstruction : MonoBehaviour
     public LayerMask obstructMask;     
 
     private List<Renderer> currentObstructions = new List<Renderer>();
+    private List<Renderer> previousObstructions = new List<Renderer>();
 
     void Update()
     {
@@ -18,28 +19,48 @@ public class CameraObstruction : MonoBehaviour
 
     void HandleObstructions()
     {
-        // Remove transparency from old obstructions
-        foreach (Renderer r in currentObstructions)
-        {
-            SetRendererOpacity(r, 1f);
-        }
         currentObstructions.Clear();
 
         // Raycast from camera to player
         Vector3 dir = player.position - transform.position;
         float dist = Vector3.Distance(transform.position, player.position);
 
-        RaycastHit[] hits = Physics.SphereCastAll(transform.position, raycastRadius, dir, dist, obstructMask);
+        RaycastHit[] hits = Physics.SphereCastAll(
+            transform.position, raycastRadius, dir, dist, obstructMask);
 
         foreach (RaycastHit hit in hits)
         {
             Renderer rend = hit.collider.GetComponent<Renderer>();
             if (rend != null)
-            {
                 currentObstructions.Add(rend);
-                SetRendererOpacity(rend, 0.2f); // fade amount
+        }
+
+        // ---------------------------
+        // Fade NEW obstructions (once)
+        // ---------------------------
+        foreach (Renderer r in currentObstructions)
+        {
+            if (!previousObstructions.Contains(r))
+            {
+                SetRendererOpacity(r, 0.2f); // fade amount
             }
         }
+
+        // ---------------------------
+        // Restore objects no longer blocked (once)
+        // ---------------------------
+        foreach (Renderer r in previousObstructions)
+        {
+            if (!currentObstructions.Contains(r))
+            {
+                SetRendererOpacity(r, 1f); // restore
+            }
+        }
+
+        // Swap list references (much faster than copying)
+        var temp = previousObstructions;
+        previousObstructions = currentObstructions;
+        currentObstructions = temp;
     }
 
     void SetRendererOpacity(Renderer rend, float alpha)
