@@ -11,6 +11,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/November 15th Build.unity
     guid: 38485e43a07f90f4cbee72897a0776c0
+  - enabled: 1
+    path: Assets/Scenes/FinishScene.unity
+    guid: 100ecead177ae0e43be6b1476cca6992
   m_configObjects:
     com.unity.input.settings: {fileID: 11400000, guid: 048ce82ceebf8a04e833dc1bb7cbc0bf, type: 2}
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 4ef96e97473e2214aa0de71490c07cb7, type: 3}

@@ -54,4 +54,10 @@ public class MainMenu : MonoBehaviour
         SceneManager.LoadScene(nextSceneName); 
     }
 
+    public void Back2MainMenu()
+    {
+        UnityEngine.SceneManagement.SceneManager.LoadScene("Title");
+    }
+    
+
 }
