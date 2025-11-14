@@ -33,7 +33,7 @@ public class EnemyCollision : MonoBehaviour
     {
         // Simply reload the scene
         Debug.Log("💀 Player was caught by enemy!");
-        // Reloads the current scene
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        // Initiate DeathManager kill player method
+        DeathManager.Instance.KillPlayer();
     }
 }
