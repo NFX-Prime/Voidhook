@@ -184,13 +184,13 @@ public class FishingMiniGame : MonoBehaviour
         }
         // If player presses any other key → fail (only if some key other than the correct one was pressed)
         // Should we chanGe this to make it not fail? 
-        /*else if (Keyboard.current.anyKey.wasPressedThisFrame)
+        else if (Keyboard.current.anyKey.wasPressedThisFrame)
         {
             // ensure it's not the correct key (already checked above)
             panel.SetActive(false);
             onFail?.Invoke();
         }
-        */
+        
     }
 
     /// <summary>

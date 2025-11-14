@@ -23,7 +23,7 @@ public class Bobber : MonoBehaviour
     void StartReelPhase()
     {
         // Starts the reeling UI and waits for completion
-        ReelInWheel.Instance.StartReeling(OnFishCaught);
+        OnFishCaught();
     }
 
     void OnFishCaught()
