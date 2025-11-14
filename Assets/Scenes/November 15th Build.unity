@@ -40932,7 +40932,7 @@ MonoBehaviour:
   interactAction: {fileID: 9171582725643219240, guid: 4ef96e97473e2214aa0de71490c07cb7, type: 3}
   pressEIcon: {fileID: 0}
   hidePosition: {fileID: 1007367076}
-  playerMovement: {fileID: 187751604}
+  playerMovement: {fileID: 1561721056}
 --- !u!1001 &1015828079
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -44372,6 +44372,7 @@ GameObject:
   - component: {fileID: 1314916256}
   - component: {fileID: 1314916255}
   - component: {fileID: 1314916257}
+  - component: {fileID: 1314916258}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -44431,6 +44432,21 @@ MonoBehaviour:
   resumeAction: {fileID: 6224330889431752952, guid: 4ef96e97473e2214aa0de71490c07cb7, type: 3}
   pauseScreen: {fileID: 843162348}
   paused: 0
+--- !u!114 &1314916258
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1314916254}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d6107b49bca8e264b92e8ef4df84dc45, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 508117252}
+  checkpoint: {fileID: 1345798256}
+  deathScreen: {fileID: 0}
 --- !u!4 &1315514733 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 892906897242169040, guid: eb77765435c0c8e48a86c7def4dd35f4, type: 3}
@@ -47353,6 +47369,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1561721057}
   - component: {fileID: 1561721056}
+  - component: {fileID: 1561721058}
   m_Layer: 0
   m_Name: VeryCutePlayer
   m_TagString: Untagged
@@ -47403,6 +47420,27 @@ Transform:
   - {fileID: 508117252}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &1561721058
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1561721055}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.41, y: 1.65, z: 0.42}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1001 &1564357097
 PrefabInstance:
   m_ObjectHideFlags: 0
