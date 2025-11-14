@@ -19,6 +19,7 @@ public class BossAI : MonoBehaviour
     public float stopDistance = 1.5f;
 
     public float distance;
+    public float height;
 
     public int numtargets = 0;
 
@@ -55,21 +56,27 @@ public class BossAI : MonoBehaviour
         // calc distance between player and boss
         distance = Vector3.Distance(player.transform.position, transform.position);
 
-        // Change amount of suspicion gained based on distance if player is not hiding
-        if (distance < innerRad)
+        height = player.transform.position.y - transform.position.y;
+
+        // Change amount of suspicion gained based on distance if player is not hiding and check if player is above monster
+        if (height < 5.0f)
         {
-            suspicion += 20f * Time.deltaTime;
+            if (distance < innerRad)
+            {
+                suspicion += 20f * Time.deltaTime;
+            }
+            else if (distance >= innerRad && distance < midRad)
+            {
+                suspicion += 10f * Time.deltaTime;
+            }
+            else if (distance >= midRad && distance < outerRad)
+            {
+                suspicion += 5f * Time.deltaTime;
+            }
         }
-        else if (distance >= innerRad && distance < midRad)
+
+        if (distance > outerRad || height > 5.0f)
         {
-            suspicion += 10f * Time.deltaTime;
-        }
-        else if (distance >= midRad && distance < outerRad)
-        {
-            suspicion += 5f * Time.deltaTime;
-        }
-        else if (distance > outerRad && isChasing)
-        {            
             suspicion -= 2.5f * Time.deltaTime;
 
             if (suspicion < 0)
@@ -77,7 +84,7 @@ public class BossAI : MonoBehaviour
                 suspicion = 0;
             }
         }
-
+        
         // chase if suspicion reaches maximum
         if(suspicion >= 100)
         {

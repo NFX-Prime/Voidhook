@@ -4,7 +4,7 @@ using TMPro;
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
-    public BossAI boss;
+    public BossAI[] boss;
 
     public int fishCount = 0;
     public int depositedFishCount = 0;
@@ -16,6 +16,7 @@ public class GameManager : MonoBehaviour
 
     public bool playerAlive;
     public int playerDeathCount = 0;
+    private float suspicion = 0;
     private void Awake()
     {
         // Singleton pattern for easy access
@@ -68,7 +69,12 @@ public class GameManager : MonoBehaviour
     {
         if (suspicionText != null)
         {
-            suspicionText.text = "Suspicion: " + boss.suspicion;
+            for (int i = 0; i < boss.Length; i++)
+            {
+                suspicion = boss[i].suspicion;
+            }
+
+            suspicionText.text = "Suspicion: " + suspicion;
         }
     }
 
