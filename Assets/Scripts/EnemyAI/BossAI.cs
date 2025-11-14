@@ -33,7 +33,7 @@ public class BossAI : MonoBehaviour
     public bool isChasing = false;
 
     // Reference to player's Movement script
-    private Movement playerMovement;  // reference to player script
+    public Movement playerMovement;  // reference to player script
 
     private NavMeshAgent agent;
 
@@ -59,25 +59,25 @@ public class BossAI : MonoBehaviour
         height = player.transform.position.y - transform.position.y;
 
         // Change amount of suspicion gained based on distance if player is not hiding and check if player is above monster
-        if (height < 5.0f)
+        if (height < 5.0f && !playerMovement.isHiding)
         {
             if (distance < innerRad)
             {
-                suspicion += 20f * Time.deltaTime;
+                suspicion += 40f * Time.deltaTime;
             }
             else if (distance >= innerRad && distance < midRad)
             {
-                suspicion += 10f * Time.deltaTime;
+                suspicion += 25f * Time.deltaTime;
             }
             else if (distance >= midRad && distance < outerRad)
             {
-                suspicion += 5f * Time.deltaTime;
+                suspicion += 10f * Time.deltaTime;
             }
         }
 
-        if (distance > outerRad || height > 5.0f)
+        if (distance > outerRad || height > 5.0f || playerMovement.isHiding)
         {
-            suspicion -= 2.5f * Time.deltaTime;
+            suspicion -= 5f * Time.deltaTime;
 
             if (suspicion < 0)
             {
@@ -91,7 +91,6 @@ public class BossAI : MonoBehaviour
             agent.SetDestination(player.transform.position);
             suspicion = 100;
         }
-        // else cycle through wander targets
         else
         {
             for (int i = 0; i < targetSwaps.Length; i++)

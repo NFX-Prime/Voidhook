@@ -35,7 +35,7 @@ public class EnemyChase : MonoBehaviour
         if (player == null || playerMovement == null) return;
 
         // Always chase the player, but adjust speed based on walking/idle
-        if (!playerMovement.isWalking)
+        if (!playerMovement.isRunning)
         {
             agent.isStopped = false;
 

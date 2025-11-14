@@ -19,6 +19,7 @@ public class HideSpot : MonoBehaviour
     private bool playerInside = false;
     private bool isHidingHere = false;
     private Transform player;
+    public Movement playerMovement;
 
     void OnEnable()
     {
@@ -83,6 +84,8 @@ public class HideSpot : MonoBehaviour
     {
         isHidingHere = true;
 
+        playerMovement.isHiding = true;
+
         // Move player to hide location
         player.position = hidePosition.position;
 
@@ -98,6 +101,7 @@ public class HideSpot : MonoBehaviour
 
     private void ExitHiding()
     {
+        playerMovement.isHiding = false;
         isHidingHere = false;
 
         // Reveal player visually

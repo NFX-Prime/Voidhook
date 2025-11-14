@@ -4,7 +4,7 @@ using TMPro;
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
-    public BossAI[] boss;
+    public BossAI boss;
 
     public int fishCount = 0;
     public int depositedFishCount = 0;
@@ -69,10 +69,7 @@ public class GameManager : MonoBehaviour
     {
         if (suspicionText != null)
         {
-            for (int i = 0; i < boss.Length; i++)
-            {
-                suspicion = boss[i].suspicion;
-            }
+            suspicion = boss.suspicion;
 
             suspicionText.text = "Suspicion: " + suspicion;
         }

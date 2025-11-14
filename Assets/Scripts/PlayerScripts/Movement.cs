@@ -46,8 +46,9 @@ public class Movement : MonoBehaviour
     [ReadOnly]
     public float currentSpeed = 0f;
 
-    // Bool for enemy behavior
-    public bool isWalking = false;
+    // Bools for enemy behavior
+    public bool isRunning = false;
+    public bool isHiding = false;
 
     // Setting horizontal velocity.
     private Vector3 currentHorizontalVelocity = Vector3.zero;
@@ -82,7 +83,6 @@ public class Movement : MonoBehaviour
     {
         // Seeing whether player is grounded or not.
         groundedPlayer = controller.isGrounded;
-
 
         // Deciding what speed based on whether player is shifting or running
         // If walking is pressed, will be walk speed.
@@ -122,7 +122,6 @@ public class Movement : MonoBehaviour
         }
         else
         {
-
             // When there's input in the air.
             if (inputDir != Vector3.zero)
             {
@@ -133,8 +132,6 @@ public class Movement : MonoBehaviour
                        targetVelocity,
                        airControlFactor * Time.deltaTime
                 );
-
-
             }
             // For when there's no input in the air. It'll gradually slowdown the character.
             else
@@ -166,7 +163,7 @@ public class Movement : MonoBehaviour
         Vector3 finalMove = currentHorizontalVelocity + (playerVelocity.y * Vector3.up);
 
         // Walking = player is pressing any movement input and NOT holding shift
-        isWalking = walkAction.action.IsPressed();
+        isRunning = walkAction.action.IsPressed();
 
         // Actually move and get collision flags
         flags = controller.Move(finalMove * Time.deltaTime);
@@ -210,10 +207,8 @@ public class Movement : MonoBehaviour
             }
         }
 
-
         // Apply gravity
         playerVelocity.y += gravityValue * Time.deltaTime;
-
         
         Vector3 finalMove = (inputDir * currentSpeed) + (playerVelocity.y * Vector3.up);
         controller.Move(finalMove * Time.deltaTime);
