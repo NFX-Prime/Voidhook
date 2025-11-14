@@ -4,14 +4,18 @@ using TMPro;
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
+    public BossAI boss;
 
     public int fishCount = 0;
     public int depositedFishCount = 0;
     [Header("UI Reference")]
     public TMP_Text fishCountText;
     public TMP_Text fishDepositedText;
+    public TMP_Text suspicionText;
     public TMP_Text playerWin;
 
+    public bool playerAlive;
+    public int playerDeathCount = 0;
     private void Awake()
     {
         // Singleton pattern for easy access
@@ -25,11 +29,14 @@ public class GameManager : MonoBehaviour
     {
         UpdateFishUI();
         UpdateDepositedFishUI();
+        UpdateSuspicionUI();
+
+        playerAlive = true;
     }
 
     private void Update()
     {
-        
+        UpdateSuspicionUI();
     }
 
     public void AddFish()
@@ -52,6 +59,16 @@ public class GameManager : MonoBehaviour
         if (fishDepositedText != null)
         {
             fishDepositedText.text = "Deposited Fish: " + depositedFishCount;
+        }
+    }
+    /// <summary>
+    /// function to update suspicion
+    /// </summary>
+    void UpdateSuspicionUI()
+    {
+        if (suspicionText != null)
+        {
+            suspicionText.text = "Suspicion: " + boss.suspicion;
         }
     }
 
@@ -77,5 +94,16 @@ public class GameManager : MonoBehaviour
 
 
     }
+
+    /// <summary>
+    /// Method that handles the player dying
+    /// </summary>
+    public void playerDies()
+    {
+        playerAlive = false;
+        playerDeathCount++;
+    }
+
+
 
 }

@@ -22,7 +22,14 @@ public class BossAI : MonoBehaviour
 
     public int numtargets = 0;
 
-    public bool foundPlayer = false;
+    public float suspicion;
+
+    public float outerRad;
+    public float innerRad;
+    public float midRad;
+
+    public float runningInc;
+    public bool isChasing = false;
 
     // Reference to player's Movement script
     private Movement playerMovement;  // reference to player script
@@ -44,23 +51,40 @@ public class BossAI : MonoBehaviour
     void Update()
     {
         if (targets == null || targetSwaps == null) return;
+        
+        // calc distance between player and boss
+        distance = Vector3.Distance(player.transform.position, transform.position);
 
-        // Always chase the player, but adjust speed based on walking/idle
-        distance = Vector3.Distance(player.position, transform.position);
-
-
-
-
-        if (distance < 10.0f && foundPlayer == false )
+        // Change amount of suspicion gained based on distance if player is not hiding
+        if (distance < innerRad)
         {
-            agent.SetDestination(player.position);
-            foundPlayer = true;
+            suspicion += 20f * Time.deltaTime;
         }
-        else if (foundPlayer == true)
+        else if (distance >= innerRad && distance < midRad)
         {
-            agent.SetDestination(player.position);
-            agent.speed = chaseSpeed;
+            suspicion += 10f * Time.deltaTime;
         }
+        else if (distance >= midRad && distance < outerRad)
+        {
+            suspicion += 5f * Time.deltaTime;
+        }
+        else if (distance > outerRad && isChasing)
+        {            
+            suspicion -= 2.5f * Time.deltaTime;
+
+            if (suspicion < 0)
+            {
+                suspicion = 0;
+            }
+        }
+
+        // chase if suspicion reaches maximum
+        if(suspicion >= 100)
+        {
+            agent.SetDestination(player.transform.position);
+            suspicion = 100;
+        }
+        // else cycle through wander targets
         else
         {
             for (int i = 0; i < targetSwaps.Length; i++)
@@ -101,5 +125,10 @@ public class BossAI : MonoBehaviour
 
         }
 
+    }
+
+    public void Chase()
+    {
+        agent.SetDestination(player.transform.position);
     }
 }

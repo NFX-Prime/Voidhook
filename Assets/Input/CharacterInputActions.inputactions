@@ -76,6 +76,24 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "ContinueText",
+                    "type": "Button",
+                    "id": "5dcd13b7-881b-4e06-b46a-e1071a26ae91",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Cast",
+                    "type": "Button",
+                    "id": "78d73e59-bbb2-4a33-9be6-92e414e9f532",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -312,23 +330,45 @@
                 },
                 {
                     "name": "",
-                    "id": "ff691bb3-de8e-4397-96f8-c6c4fca2e26e",
-                    "path": "<Keyboard>/e",
+                    "id": "bddfdba1-8a4e-4eeb-b639-4a5525b9ffdb",
+                    "path": "<Keyboard>/escape",
                     "interactions": "",
                     "processors": "",
-                    "groups": ";Keyboard&Mouse",
-                    "action": "Interact",
+                    "groups": "",
+                    "action": "Quit",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
                 {
                     "name": "",
                     "id": "8179d281-4860-4b46-88c7-a9f5e7d288a2",
-                    "path": "<Keyboard>/enter",
+                    "path": "<Keyboard>/e",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
                     "action": "Interact",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "389fa255-f8d1-4fca-97d1-6554b0f56db6",
+                    "path": "<Keyboard>/e",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ContinueText",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "8c328ff4-219e-4a8e-b040-a6cde601bfa3",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Keyboard&Mouse",
+                    "action": "Cast",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

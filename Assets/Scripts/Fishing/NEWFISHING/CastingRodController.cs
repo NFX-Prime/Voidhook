@@ -6,7 +6,8 @@ using UnityEngine.InputSystem;
 
 public class PlayerFishingController : MonoBehaviour
 {
-    public static PlayerFishingController Instance; // Singleton for easy access
+    // Instance for using in other scripts
+    public static PlayerFishingController Instance;
 
     public GameObject bobberPrefab;
     public float castHeight = 0.5f;
@@ -23,7 +24,7 @@ public class PlayerFishingController : MonoBehaviour
     public int arcSegments = 10;
     // Maximum height of the arc
     public float arcHeight = 2f;
-    // List that holds the castarrows
+    // List that holds the cast arrows
     private List<GameObject> castArrows = new List<GameObject>();
 
     // Container to hold all preview arrows so they don't affect the player
@@ -33,7 +34,7 @@ public class PlayerFishingController : MonoBehaviour
     private LineRenderer lineRenderer;
 
     [Header("Line Settings")]
-    // Max distance to before line breaks 
+    // Max distance before line breaks 
     public float maxLineDistance = 15f;
 
     private bool isCharging = false;
@@ -44,11 +45,17 @@ public class PlayerFishingController : MonoBehaviour
     // This event is called when the line breaks
     public System.Action onLineBreak;
 
-    // Setting up proprerty to see if fishing is activated.
+    // Setting up property to see if fishing is activated.
     public bool IsFishingSessionActive { get; private set; } = false;
 
     // Whether player can cast (disabled while in minigame)
     private bool canCast = true;
+
+    // Cached mouse target for preview and cast
+    private Vector3 mouseWorldTarget;
+
+    float groundBlend;
+
 
     void Awake()
     {
@@ -58,10 +65,8 @@ public class PlayerFishingController : MonoBehaviour
         // Setup the LineRenderer
         lineRenderer = gameObject.AddComponent<LineRenderer>();
         lineRenderer.positionCount = 2;
-        // Simple unlit material
         lineRenderer.material = new Material(Shader.Find("Sprites/Default"));
         lineRenderer.widthMultiplier = 0.05f;
-        // Only show when bobber exists
         lineRenderer.enabled = false;
         lineRenderer.numCapVertices = 2;
     }
@@ -99,7 +104,6 @@ public class PlayerFishingController : MonoBehaviour
         // Update the fishing line if bobber exists
         if (currentBobber != null)
         {
-
             // Getting distance from bobber to player position
             float distance = Vector3.Distance(transform.position, currentBobber.transform.position);
 
@@ -109,14 +113,13 @@ public class PlayerFishingController : MonoBehaviour
                 Destroy(currentBobber);
                 currentBobber = null;
                 lineRenderer.enabled = false;
-                // Notify listeners that the line broke (in FishingMiniGame and ReelInWheel)
                 onLineBreak?.Invoke();
             }
             else
             {
                 lineRenderer.enabled = true;
-                lineRenderer.SetPosition(0, transform.position + Vector3.up * castHeight); // Player position (adjust height)
-                lineRenderer.SetPosition(1, currentBobber.transform.position); // Bobber position
+                lineRenderer.SetPosition(0, transform.position + Vector3.up * castHeight);
+                lineRenderer.SetPosition(1, currentBobber.transform.position);
             }
         }
         else
@@ -128,7 +131,6 @@ public class PlayerFishingController : MonoBehaviour
     /// <summary>
     /// Function that starts cast
     /// </summary>
-    /// <param name="context"></param>
     void OnCastStarted(InputAction.CallbackContext context)
     {
         // Prevent casting while in reeling minigame
@@ -141,7 +143,6 @@ public class PlayerFishingController : MonoBehaviour
         if (castPreviewContainer == null)
         {
             castPreviewContainer = new GameObject("CastPreviewContainer");
-            // Making it world root
             castPreviewContainer.transform.parent = null;
             castPreviewContainer.transform.position = Vector3.zero;
         }
@@ -150,28 +151,28 @@ public class PlayerFishingController : MonoBehaviour
     /// <summary>
     /// Function that handles when cast is released.
     /// </summary>
-    /// <param name="context"></param>
     void OnCastReleased(InputAction.CallbackContext context)
     {
-
-        // Release always clears the blocking flag
         blockCastUntilRelease = false;
 
-        // Prevent casting while in reeling minigame
         if (!isCharging || !canCast) return;
 
         isCharging = false;
 
-        float castDistance = Mathf.Lerp(minCastDistance, maxCastDistance, castCharge);
-        Vector3 castPoint = transform.position + transform.forward * castDistance + Vector3.up * 2f;
+        // Final world target from mouse position
+        Vector3 castTarget = GetMouseWorldPoint();
 
-        // Incase something null-ey happens idk this fixed something so pls dont delete
+        // Clamp to max range from player
+        Vector3 direction = (castTarget - transform.position);
+        direction.y = 0f; // ignore vertical difference
+        float distance = Mathf.Min(direction.magnitude, maxCastDistance);
+        castTarget = transform.position + direction.normalized * distance;
+
+        // Spawn the bobber at target + small offset
         if (currentBobber != null)
-        {
             Destroy(currentBobber);
-        }
 
-        currentBobber = Instantiate(bobberPrefab, castPoint, Quaternion.identity);
+        currentBobber = Instantiate(bobberPrefab, castTarget + Vector3.up * 0.1f, Quaternion.identity);
 
         // Delete the cast preview
         ClearCastPreview();
@@ -184,41 +185,87 @@ public class PlayerFishingController : MonoBehaviour
     /// </summary>
     void UpdateCastPreview()
     {
-        float castDistance = Mathf.Lerp(minCastDistance, maxCastDistance, castCharge);
+        // Get mouse target each frame (real ground point)
+        mouseWorldTarget = GetMouseWorldPoint();
 
-        // Update origin and direction every frame based on player position and rotation
+        // Compute direction and distance from player to hit point
         Vector3 origin = transform.position + Vector3.up * castHeight;
-        Vector3 dir = transform.forward.normalized;
+        Vector3 toTarget = mouseWorldTarget - origin;
 
-        // Instantiate arrows as children of container if needed
+        // Clamp max distance horizontally
+        Vector3 horizontalDir = new Vector3(toTarget.x, 0f, toTarget.z).normalized;
+        float horizontalDist = Mathf.Clamp(new Vector3(toTarget.x, 0f, toTarget.z).magnitude, minCastDistance, maxCastDistance);
+        Vector3 targetPos = origin + horizontalDir * horizontalDist;
+
+        // Adjust final target height to actual terrain height
+        targetPos.y = mouseWorldTarget.y + 0.1f; // small offset to prevent z-fighting
+
+        // Instantitate each arrow to display
         while (castArrows.Count < arcSegments)
         {
             GameObject arrow = Instantiate(castArrowPrefab, origin, Quaternion.identity, castPreviewContainer.transform);
             castArrows.Add(arrow);
         }
 
-        // Set arrow positions in world-space
+        // Update arrow positions to form a smooth arc from origin to real ground hit
         for (int i = 0; i < arcSegments; i++)
         {
             float t = (float)i / (arcSegments - 1);
-            Vector3 point = origin + dir * (castDistance * t);
-            point.y += Mathf.Sin(t * Mathf.PI) * arcHeight;
+
+            // Interpolate between start and end positions
+            Vector3 point = Vector3.Lerp(origin, targetPos, t);
+
+            // Adding arc height relative to curve position
+            float heightOffset = Mathf.Sin(t * Mathf.PI) * arcHeight;
+            point.y += heightOffset;
+
+            // 
+            if (t > 0.8f)
+            {
+                // blend last 20% down to ground
+                groundBlend = (t - 0.8f) / 0.2f; 
+                point.y = Mathf.Lerp(point.y, targetPos.y, groundBlend);
+            }
 
             castArrows[i].transform.position = point;
 
-            // Calculate rotation
-            Vector3 nextPoint = (i < arcSegments - 1)
-                ? origin + dir * (castDistance * ((float)(i + 1) / (arcSegments - 1)))
-                : point + dir;
-
-            nextPoint.y += (i < arcSegments - 1) ? Mathf.Sin(((float)(i + 1) / (arcSegments - 1)) * Mathf.PI) * arcHeight : 0;
-
-            Vector3 direction = (nextPoint - point).normalized;
-            if (direction != Vector3.zero)
-                castArrows[i].transform.rotation = Quaternion.LookRotation(direction);
+            // Orientation of each arrow segment
+            if (i < arcSegments - 1)
+            {
+                Vector3 nextPoint = Vector3.Lerp(origin, targetPos, (float)(i + 1) / (arcSegments - 1));
+                nextPoint.y += Mathf.Sin(((float)(i + 1) / (arcSegments - 1)) * Mathf.PI) * arcHeight;
+                Vector3 dir = (nextPoint - point).normalized;
+                if (dir != Vector3.zero)
+                    castArrows[i].transform.rotation = Quaternion.LookRotation(dir);
+            }
 
             castArrows[i].SetActive(true);
         }
+    }
+
+    /// <summary>
+    /// Get mouse position projected onto ground plane
+    /// </summary>
+    Vector3 GetMouseWorldPoint()
+    {
+        Ray ray = Camera.main.ScreenPointToRay(Mouse.current.position.ReadValue());
+        RaycastHit hit;
+
+        // Raycast against anything on the ground layer
+        if (Physics.Raycast(ray, out hit, 100f, LayerMask.GetMask("Default", "Ground", "Terrain")))
+        {
+            return hit.point;
+        }
+
+        // Fallback: if nothing hit, use flat plane at player's height
+        Plane playerPlane = new Plane(Vector3.up, new Vector3(0, transform.position.y, 0));
+        if (playerPlane.Raycast(ray, out float distance))
+        {
+            return ray.GetPoint(distance);
+        }
+
+        // As a last fallback, cast a few meters forward
+        return transform.position + transform.forward * 2f;
     }
 
     /// <summary>
@@ -235,7 +282,6 @@ public class PlayerFishingController : MonoBehaviour
     /// <summary>
     /// Function to enable or disable casting (used by ReelInWheel minigame)
     /// </summary>
-    /// <param name="value"></param>
     public void SetCanCast(bool value)
     {
         canCast = value;
@@ -249,11 +295,9 @@ public class PlayerFishingController : MonoBehaviour
         IsFishingSessionActive = true;
         SetCanCast(false);
 
-        // Cancel any ongoing cast
         isCharging = false;
         ClearCastPreview();
 
-        // Prevent casting until button is released
         blockCastUntilRelease = true;
     }
 

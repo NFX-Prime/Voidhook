@@ -18,7 +18,6 @@ public class Movement : MonoBehaviour
     // Potential dash button to be made in the future (maybe)
     // private bool dash = false;
 
-
     private CharacterController controller;
     private Vector3 playerVelocity;
     public bool groundedPlayer;
@@ -41,8 +40,8 @@ public class Movement : MonoBehaviour
     public float airDeceleration = 2.0f;
 
     [Header("Movement Speeds")]
-    public float runSpeed = 5.0f;
-    public float walkSpeed = 2.0f;
+    public float runSpeed = 4.0f;
+    public float walkSpeed = 5.0f;
 
     [ReadOnly]
     public float currentSpeed = 0f;
@@ -59,7 +58,6 @@ public class Movement : MonoBehaviour
 
     // Collisions
     CollisionFlags flags;
-
 
 
     private void Awake()
