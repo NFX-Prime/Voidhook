@@ -60,6 +60,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: d4c5239eda01a5c4c886993cdd9af51a, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: -876546973899608171, guid: 1212639dca4d1b24abeb44359a75c2a4, type: 3}
     - target: {fileID: -5754084199372789682, guid: d4c5239eda01a5c4c886993cdd9af51a, type: 3}
       propertyPath: m_Mesh
       value: 
@@ -120,7 +124,8 @@ MonoBehaviour:
   runSpeed: 5
   walkSpeed: 2
   currentSpeed: 0
-  isWalking: 0
+  isRunning: 0
+  isHiding: 0
   coyoteTime: 0.2
   coyoteTimeCounter: 0
 --- !u!114 &8320990441168881946

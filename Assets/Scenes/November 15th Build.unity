@@ -946,6 +946,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2030862620986336703, guid: eb77765435c0c8e48a86c7def4dd35f4, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 7b7768b83b12a8540b002a32080426c6, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -10965,6 +10969,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2030862620986336703, guid: eb77765435c0c8e48a86c7def4dd35f4, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -11616,11 +11624,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 187751587}
-  obstructionMask:
+  raycastRadius: 0.3
+  obstructMask:
     serializedVersion: 2
     m_Bits: 8
-  fadedAlpha: 0.081
-  fadeSpeed: 5
 --- !u!1001 &960367005
 PrefabInstance:
   m_ObjectHideFlags: 0
