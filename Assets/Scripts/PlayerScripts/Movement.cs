@@ -8,6 +8,8 @@ using static UnityEngine.GraphicsBuffer;
 
 public class Movement : MonoBehaviour
 {
+
+
     private float jumpHeight = 1.5f;
     private float gravityValue = -9.81f;
     private float rotationSpeed = 4.0f;
@@ -60,7 +62,11 @@ public class Movement : MonoBehaviour
     // Collisions
     CollisionFlags flags;
 
+    // Variables to hold for animation stuff
+    bool isMoving = false;
 
+    // Getting animator. Set it in inspector.
+    public Animator mAnimator;
     private void Awake()
     {
         controller = gameObject.AddComponent<CharacterController>();
@@ -106,6 +112,17 @@ public class Movement : MonoBehaviour
         }
 
         // Read WASD input using the moveAction input.
+
+        if (moveAction.action.IsPressed())
+        {
+            isMoving = true;
+            mAnimator.SetTrigger("WalkingTrig");
+        }
+        else
+        {
+            isMoving = false;
+            mAnimator.SetTrigger("RestTrig");
+        }
         Vector2 input = moveAction.action.ReadValue<Vector2>();
 
         // Gets direction of the WASD keys and maps them into a vector we can use.
