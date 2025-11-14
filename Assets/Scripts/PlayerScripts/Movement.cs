@@ -63,7 +63,7 @@ public class Movement : MonoBehaviour
     CollisionFlags flags;
 
     // Variables to hold for animation stuff
-    bool isMoving = false;
+    bool isWalking = false;
 
     // Getting animator. Set it in inspector.
     public Animator mAnimator;
@@ -95,6 +95,7 @@ public class Movement : MonoBehaviour
         // If not, then player is running, and will be set to run speed.
         currentSpeed = walkAction.action.IsPressed() ? walkSpeed : runSpeed;
 
+
         // If statement to check if player is on the ground
         if (groundedPlayer && playerVelocity.y < 0)
         {
@@ -111,18 +112,6 @@ public class Movement : MonoBehaviour
             coyoteTimeCounter -= Time.deltaTime;
         }
 
-        // Read WASD input using the moveAction input.
-
-        if (moveAction.action.IsPressed())
-        {
-            isMoving = true;
-            mAnimator.SetTrigger("WalkingTrig");
-        }
-        else
-        {
-            isMoving = false;
-            mAnimator.SetTrigger("RestTrig");
-        }
         Vector2 input = moveAction.action.ReadValue<Vector2>();
 
         // Gets direction of the WASD keys and maps them into a vector we can use.
@@ -191,6 +180,30 @@ public class Movement : MonoBehaviour
             // Remove movement "into" the wall
             lastMoveDirection = Vector3.ProjectOnPlane(lastMoveDirection, lastWallNormal).normalized;
         }
+
+        // Read WASD input using the moveAction input.
+
+        if (jumpAction.action.IsPressed())
+        {
+            mAnimator.SetTrigger("JumpingTrig");
+            return;
+        }
+        else if (moveAction.action.IsPressed() && walkAction.action.IsPressed())
+        {
+            isWalking = true;
+            mAnimator.SetTrigger("RunningTrig");
+        }
+        else if (moveAction.action.IsPressed())
+        {
+            isWalking = false;
+            mAnimator.SetTrigger("WalkingTrig");
+        }
+        else
+        {
+            isWalking = false;
+            mAnimator.SetTrigger("RestTrig");
+        }
+
     }
 
 
