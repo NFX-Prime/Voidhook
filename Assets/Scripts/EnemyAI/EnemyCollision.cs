@@ -11,11 +11,11 @@ public class EnemyCollision : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Player"))
         {
-            KillPlayer();
+            //KillPlayer();
         }
     }
 
-    // If you’re using CharacterController on the player,
+    // If using CharacterController on the player,
     // replace OnCollisionEnter with OnTriggerEnter and make
     // the enemy’s collider set to "Is Trigger"
     private void OnTriggerEnter(Collider other)

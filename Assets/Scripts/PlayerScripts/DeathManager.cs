@@ -18,6 +18,10 @@ public class DeathManager : MonoBehaviour
 
     private string logFilePath;
 
+    // Preventing double kills at the same time.
+    private bool isDead = false;
+
+    // Building folder/file to allow for saving file.
     void Awake()
     {
         if (Instance == null)
@@ -28,18 +32,29 @@ public class DeathManager : MonoBehaviour
             return;
         }
 
-        logFilePath = Path.Combine(Application.persistentDataPath, "death_log.txt");
+        // Save next to the .exe (easy access)
+        string buildFolder = Directory.GetParent(Application.dataPath).FullName;
+        logFilePath = Path.Combine(buildFolder, "death_log.txt");
 
         sceneStartTime = Time.time;
         lastDeathTime = sceneStartTime;
 
         if (deathScreen != null)
             deathScreen.SetActive(false);
+
+        // Setting is dead to false just incase
+        isDead = false;
     }
 
     // Call from anywhere (USING DeathManager.Instance.KillPlayer();)
     public void KillPlayer()
     {
+
+        if (isDead == true)
+        {
+            // Then ignore this since the player is already dead.
+            return;
+        }
         // Update GameManager stats
         GameManager.Instance.playerDies();
 
@@ -62,6 +77,9 @@ public class DeathManager : MonoBehaviour
 
         // Pause world
         Time.timeScale = 0f;
+        
+        // Setting isdead to true
+        isDead = true;
     }
 
     /// <summary>
@@ -70,18 +88,29 @@ public class DeathManager : MonoBehaviour
     /// </summary>
     public void RestartAtCheckpoint()
     {
+
         // Hide UI
         deathScreen.SetActive(false);
 
+        CharacterController cc = player.GetComponent<CharacterController>();
+        if (cc != null) cc.enabled = false;
+
         // Respawn player
         player.position = checkpoint.position;
+
+        // Re-enabling controller after movement was done
+        if (cc != null) cc.enabled = true;
 
         // Reduce fish count (2 fish penalty)
         GameManager.Instance.fishCount =
             Mathf.Max(0, GameManager.Instance.fishCount - 2);
 
+        // Setting is dead to false;
+        isDead = false;
+
         // Update UI via GameManager
         Time.timeScale = 1f;
+
     }
 
     /// <summary>
