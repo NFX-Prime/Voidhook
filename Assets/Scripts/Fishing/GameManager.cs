@@ -49,7 +49,7 @@ public class GameManager : MonoBehaviour
     void UpdateFishUI()
     {
         if (fishCountText != null)
-            fishCountText.text = "Fish: " + fishCount;
+            fishCountText.text = fishCount.ToString();
     }
 
     /// <summary>
