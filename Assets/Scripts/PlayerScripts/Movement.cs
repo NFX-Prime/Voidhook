@@ -1,4 +1,4 @@
-// This first example shows how to move using Input System Package (New)
+    // This first example shows how to move using Input System Package (New)
 
 using Unity.Collections;
 using UnityEngine;
