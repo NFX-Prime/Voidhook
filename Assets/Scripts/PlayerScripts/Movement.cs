@@ -61,6 +61,7 @@ public class Movement : MonoBehaviour
 
     // Collisions
     CollisionFlags flags;
+    public ParticleSystem playerTrail;
 
     // Variables to hold for animation stuff
     bool isWalking = false;
@@ -138,6 +139,8 @@ public class Movement : MonoBehaviour
                        targetVelocity,
                        airControlFactor * Time.deltaTime
                 );
+
+                playerTrail.Play();
             }
             // For when there's no input in the air. It'll gradually slowdown the character.
             else
@@ -148,6 +151,8 @@ public class Movement : MonoBehaviour
                     Vector3.zero,
                     airDeceleration * Time.deltaTime
                 );
+
+                playerTrail.Stop();
             }
         }
 
