@@ -14,10 +14,10 @@ OcclusionCullingSettings:
 RenderSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 10
-  m_Fog: 0
+  m_Fog: 1
   m_FogColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
   m_FogMode: 3
-  m_FogDensity: 0.01
+  m_FogDensity: 0.006
   m_LinearFogStart: 0
   m_LinearFogEnd: 300
   m_AmbientSkyColor: {r: 0.212, g: 0.227, b: 0.259, a: 1}
@@ -6253,7 +6253,7 @@ Transform:
   m_GameObject: {fileID: 458787437}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 54.2, y: -12, z: -8.1}
+  m_LocalPosition: {x: 54.2, y: -12, z: -20.14}
   m_LocalScale: {x: 46.024395, y: 1.383424, z: 6.139912}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -41061,7 +41061,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 686148408}
-  m_VersionIndex: 7
+  m_VersionIndex: 13
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -41819,7 +41819,7 @@ PrefabInstance:
       objectReference: {fileID: 2136374842}
     - target: {fileID: 413907558309854668, guid: 9954a664efb33314ab118d7c15a32dae, type: 3}
       propertyPath: m_VersionIndex
-      value: 49
+      value: 55
       objectReference: {fileID: 0}
     - target: {fileID: 413907558309854668, guid: 9954a664efb33314ab118d7c15a32dae, type: 3}
       propertyPath: m_Tangents.Array.data[366].x
@@ -43129,7 +43129,7 @@ GameObject:
   - component: {fileID: 1101862625}
   - component: {fileID: 1101862624}
   m_Layer: 0
-  m_Name: Particle System (1)
+  m_Name: playertrail
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -49625,7 +49625,7 @@ GameObject:
   - component: {fileID: 1264550478}
   - component: {fileID: 1264550477}
   m_Layer: 0
-  m_Name: Particle System
+  m_Name: ShipSmoke
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -61651,6 +61651,77 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4938533711494068921, guid: fb7931f5f9adbfe48a9916093a0bb44c, type: 3}
   m_PrefabInstance: {fileID: 770336030}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1842120383
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1842120386}
+  - component: {fileID: 1842120385}
+  - component: {fileID: 1842120384}
+  m_Layer: 0
+  m_Name: Box Volume
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1842120384
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1842120383}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 172515602e62fb746b5d573b38a5fe58, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_IsGlobal: 0
+  priority: 0
+  blendDistance: 1
+  weight: 1
+  sharedProfile: {fileID: 11400000, guid: d1cb142b810648b4e9169afe41e24511, type: 2}
+--- !u!65 &1842120385
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1842120383}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!4 &1842120386
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1842120383}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 334.8937, y: 0, z: 42.786484}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &1842283393 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6342545402283412795, guid: 474d480d3c9eefd4cbe227a2955240fc, type: 3}
@@ -66256,3 +66327,4 @@ SceneRoots:
   - {fileID: 966329536}
   - {fileID: 1344803580}
   - {fileID: 1278471825}
+  - {fileID: 1842120386}
