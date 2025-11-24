@@ -63,7 +63,7 @@ PrefabInstance:
     - target: {fileID: -7511558181221131132, guid: 01e80b308e15ceb40b512f4bb0f46e8d, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
-      objectReference: {fileID: 2100000, guid: 4d85e100912965a4da6b2106b5d132ac, type: 2}
+      objectReference: {fileID: 2100000, guid: dff0aa2a95cf4a6448d3c9b11765e39c, type: 2}
     - target: {fileID: 919132149155446097, guid: 01e80b308e15ceb40b512f4bb0f46e8d, type: 3}
       propertyPath: m_Name
       value: littlePond (2)
@@ -227,8 +227,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bcdf77b2d1b48db4ca448309269ec0b5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bobberPrefab: {fileID: 411070408041363775, guid: 09194cb956a90a44b92ce42e33d20653, type: 3}
-  castHeight: 0.5
-  biteWaitMin: 1.5
-  biteWaitMax: 4
   miniGameUI: {fileID: 0}
