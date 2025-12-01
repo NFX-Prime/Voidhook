@@ -208,7 +208,6 @@ public class Movement : MonoBehaviour
             isWalking = false;
             mAnimator.SetTrigger("RestTrig");
         }
-
     }
 
 
