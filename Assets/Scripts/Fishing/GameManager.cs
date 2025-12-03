@@ -59,7 +59,7 @@ public class GameManager : MonoBehaviour
     {
         if (fishDepositedText != null)
         {
-            fishDepositedText.text = "Deposited Fish: " + depositedFishCount;
+            fishDepositedText.text = "" + depositedFishCount;
         }
     }
     /// <summary>
@@ -71,7 +71,7 @@ public class GameManager : MonoBehaviour
         {
             suspicion = boss.suspicion;
 
-            suspicionText.text = "Suspicion: " + suspicion;
+            suspicionText.text = "" + suspicion;
         }
     }
 
