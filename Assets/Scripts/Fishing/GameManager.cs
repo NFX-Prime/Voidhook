@@ -80,7 +80,7 @@ public class GameManager : MonoBehaviour
     {
         // Depositing fish
         Debug.Log("DepositFish function activated");
-        depositedFishCount = fishCount;
+        depositedFishCount += fishCount;
         fishCount = 0;
 
         // Updating the UIs

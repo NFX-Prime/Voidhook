@@ -17,7 +17,7 @@ public class FinishZone : MonoBehaviour
             return;
 
         // Check player's fish count
-        if (GameManager.Instance.fishCount >= requiredFish)
+        if (GameManager.Instance.depositedFishCount >= requiredFish)
         {
             SceneManager.LoadScene(finishSceneName);
         }
