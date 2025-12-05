@@ -45,7 +45,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 8349542763059015795, guid: 1212639dca4d1b24abeb44359a75c2a4, type: 3}
+  m_Motion: {fileID: -4274770991410265338, guid: 3883ec24aba9f844e89e4a2a9b6be23c, type: 3}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
@@ -200,7 +200,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: -7551964380084998518, guid: 1212639dca4d1b24abeb44359a75c2a4, type: 3}
+  m_Motion: {fileID: -3828583913261678786, guid: 3883ec24aba9f844e89e4a2a9b6be23c, type: 3}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
@@ -335,7 +335,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: -2110616130606296526, guid: 1212639dca4d1b24abeb44359a75c2a4, type: 3}
+  m_Motion: {fileID: -2110616130606296526, guid: 3883ec24aba9f844e89e4a2a9b6be23c, type: 3}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
@@ -348,7 +348,10 @@ AnimatorStateTransition:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: 
-  m_Conditions: []
+  m_Conditions:
+  - m_ConditionMode: 1
+    m_ConditionEvent: JumpingTrig
+    m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 4652459592055658092}
   m_Solo: 0
